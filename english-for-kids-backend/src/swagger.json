@@ -1,0 +1,428 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "English-For-Kids",
+    "description": "This is a sample server English for kids",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://majestic-rocky-mountain-22221.herokuapp.com/",
+      "description": "Heroku"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Categories",
+      "description": "API for categories in the system"
+    },
+    {
+      "name": "Cards",
+      "description": "API for cards in the system"
+    },
+    {
+      "name": "Users",
+      "description": "API for users in the system"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "multipart/form-data"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/category": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Get all categories in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          }
+        }
+      }
+    },
+    "/api/category/{name}": {
+      "parameters": [
+        {
+          "name": "name",
+          "in": "path",
+          "required": true,
+          "description": "Name of the category that we want to match",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Get category with given name",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Post category with given name",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "requestBody": {
+          "description": "Category image",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/definitions/CategoryData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad request."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Categories"
+        ],
+        "summary": "Delete category with given name",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update category with given name",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "tags": [
+          "Categories"
+        ],
+        "requestBody": {
+          "description": "Category image",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/definitions/CategoryData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          }
+        }
+      }
+    },
+    "/api/words": {
+      "get": {
+        "tags": [
+          "Cards"
+        ],
+        "summary": "Get all cards in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Card"
+            }
+          }
+        }
+      }
+    },
+    "/api/words/length/{name}": {
+      "parameters": [
+        {
+          "name": "name",
+          "in": "path",
+          "required": true,
+          "description": "Category of the card that we want to match",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Cards"
+        ],
+        "summary": "Get cards with given name category",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CardsByCategory"
+            }
+          }
+        }
+      }
+    },
+    "/api/word/{name}": {
+      "parameters": [
+        {
+          "name": "name",
+          "in": "path",
+          "required": true,
+          "description": "Name of the card that we want to match",
+          "type": "string"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Cards"
+        ],
+        "summary": "Post card with given name",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "requestBody": {
+          "description": "Card data",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/definitions/CardData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Card"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad request."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Cards"
+        ],
+        "summary": "Delete card with given name",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Card"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Cards"
+        ],
+        "summary": "Update card with given name",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "requestBody": {
+          "description": "Card data",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/definitions/CardData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Card"
+            }
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Sign in",
+        "requestBody": {
+          "description": "User Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/UserToken"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "login": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "UserToken": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "user": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/User"
+          }
+        }
+      }
+    },
+    "Category": {
+      "type": "object",
+      "properties": {
+        "categoryName": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        }
+      }
+    },
+    "CategoryData": {
+      "type": "object",
+      "properties": {
+        "categoryName": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string",
+          "format": "binary"
+        }
+      }
+    },
+    "CardData": {
+      "type": "object",
+      "properties": {
+        "word": {
+          "type": "string"
+        },
+        "translation": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string",
+          "format": "binary"
+        },
+        "sound": {
+          "type": "string",
+          "format": "binary"
+        }
+      }
+    },
+    "CardsByCategory": {
+      "type": "array",
+      "properties": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/definitions/Card"
+        }
+      }
+    },
+    "Card": {
+      "type": "object",
+      "properties": {
+        "number": {
+          "type": "number"
+        },
+        "category": {
+          "type": "string"
+        },
+        "word": {
+          "type": "string"
+        },
+        "translation": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "audioSrc": {
+          "type": "string"
+        },
+        "train": {
+          "type": "number"
+        },
+        "play": {
+          "type": "number"
+        },
+        "fails": {
+          "type": "number"
+        },
+        "answers": {
+          "type": "number"
+        },
+        "percent": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

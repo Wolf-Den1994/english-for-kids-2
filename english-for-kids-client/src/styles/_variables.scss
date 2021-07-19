@@ -1,0 +1,27 @@
+$color-main: #fff;
+$color-additional: #ffa86b;
+$color-primary: #f5b486;
+$color-additional-active: #9bffa3;
+$color-auxiliary: #a347bd;
+$color-btn-sidebar-hover: #999;
+$color-backgr-modal: #ffffffe6;
+$color-backgr-modal-additional: #4fbe79;
+$color-backgr-admin: #00bf82;
+$color-btn-cancel: #e53935;
+$color-text: #616161;
+$color-text-modal: #000000cc;
+$color-final-text: #b53b0c;
+$color-border-card: #bbb;
+$color-shadow: #00000040;
+$color-overlay-background: #0000003f;
+$font: "Roboto", "Franklin Gothic Medium", "Arial Narrow", "Arial", sans-serif;
+
+@mixin button() {
+  outline: none;
+  box-shadow: none;
+  cursor: pointer;
+  border: none;
+  &:hover {
+    transition: all 0.1s ease-in-out;
+  }
+}

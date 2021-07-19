@@ -1,0 +1,31 @@
+.winner {
+  width: 280px;
+  height: 280px;
+  margin: 40px auto;
+  background-image: url(./assets/image/success.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 280px;
+  opacity: 1;
+  background-color: transparent;
+}
+
+.loser {
+  width: 280px;
+  height: 280px;
+  margin: 40px auto;
+  background-image: url(./assets/image/failure.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 280px;
+  opacity: 1;
+  background-color: transparent;
+}
+
+.final-text {
+  text-align: center;
+  font-size: 30px;
+  color: $color-final-text;
+  position: relative;
+  top: 300px;
+}
