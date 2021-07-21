@@ -4,7 +4,7 @@ import { Order } from '../utils/enums';
 import { IWordsMongo } from '../utils/interfaces';
 import { renderStatistic } from './render-statistic';
 
-const cleanArr = (arr: IWordsMongo[]) => {
+const cleanArr = (arr: IWordsMongo[]): IWordsMongo[] => {
   const resettedArray: IWordsMongo[] = arr.map((item) => ({
     ...item,
     train: 0,

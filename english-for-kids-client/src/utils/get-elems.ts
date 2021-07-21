@@ -1,4 +1,4 @@
-import { IHTMLElems } from './interfaces';
+import { IHTMLElems, IHTMLModal } from './interfaces';
 
 export const getArrsElem = (): IHTMLElems => {
   const svgs = document.querySelectorAll('.image-svg');
@@ -19,12 +19,6 @@ export const getArrsElem = (): IHTMLElems => {
     score,
   };
 };
-
-interface IHTMLModal {
-  modal: HTMLDivElement;
-  inputLogin: HTMLInputElement;
-  inputPassword: HTMLInputElement;
-}
 
 export const getModal = (): IHTMLModal => {
   const modal = document.querySelector('.login-modal') as HTMLDivElement;
@@ -78,3 +72,6 @@ export const getSidebar = (): HTMLElement =>
 
 export const getLoader = (): HTMLDivElement =>
   document.querySelector('.loader') as HTMLDivElement;
+
+export const getLinksAll = (): NodeListOf<Element> =>
+  document.querySelectorAll('.menu-link') as NodeListOf<Element>;

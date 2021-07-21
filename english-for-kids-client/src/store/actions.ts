@@ -1,13 +1,7 @@
 import { NumberPage } from '../utils/enums';
+import { ITypeState } from '../utils/interfaces';
 import { TypeStateApp } from '../utils/types';
 import { ADMIN_CATEGORY, CHANGE_MODE, CHANGE_PAGE } from './action-types';
-
-interface ITypeState {
-  type: string;
-  mode?: TypeStateApp;
-  page?: NumberPage;
-  admCateg?: string;
-}
 
 export const changeMode = (mode: TypeStateApp): ITypeState => ({
   type: CHANGE_MODE,

@@ -7,7 +7,7 @@ import { ElemClasses, Events, RoutNames, Tags } from '../utils/enums';
 import { getModal, header, overlay } from '../utils/get-elems';
 import { removeClassList } from '../utils/remove-class';
 
-const renderLoginModal = () => {
+const renderLoginModal = (): void => {
   const modal = document.createElement(Tags.DIV);
   modal.className = 'login-modal';
   header().append(modal);
@@ -48,12 +48,12 @@ const renderLoginModal = () => {
   divBtns.append(btnLogin);
 };
 
-const removeClassHiddenModal = () => {
+const removeClassHiddenModal = (): void => {
   removeClassList(overlay(), ElemClasses.HIDDEN_MODAL);
   removeClassList(document.body, ElemClasses.HIDDEN_MODAL);
 };
 
-const closeLoginModal = () => {
+const closeLoginModal = (): void => {
   const elems = getModal();
   header().children[2].remove();
   removeClassHiddenModal();
@@ -71,7 +71,7 @@ const checkUser = async (login: string, password: string): Promise<void> => {
   }
 };
 
-const selectionHandlerModal = (event: Event) => {
+const selectionHandlerModal = (event: Event): void => {
   const targetElem = event.target as HTMLElement;
   const elems = getModal();
   if (checkClass(targetElem, ElemClasses.BTN_CANCEL)) {

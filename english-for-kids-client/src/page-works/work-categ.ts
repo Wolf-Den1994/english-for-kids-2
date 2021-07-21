@@ -22,7 +22,7 @@ export const rederectOnWordsPage = (): void => {
   onNavigate(`/${store.getState().admCateg.toLowerCase()}${RoutNames.WORDS}`);
 };
 
-const addListeners = () => {
+const addListeners = (): void => {
   linkOut().addEventListener(Events.CLICK, rederectOnHome);
   linkCateg().addEventListener(Events.CLICK, rederectOnCategPage);
   linkWords().addEventListener(Events.CLICK, rederectOnWordsPage);

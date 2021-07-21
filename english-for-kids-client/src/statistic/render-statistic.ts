@@ -9,7 +9,7 @@ import { table } from './table';
 import { tbody } from './tbody';
 import { renderTitleRow, trTitle } from './tr-title';
 
-const cleareField = () => {
+const cleareField = (): void => {
   root().innerHTML = '';
   tbody.innerHTML = '';
   table.innerHTML = '';

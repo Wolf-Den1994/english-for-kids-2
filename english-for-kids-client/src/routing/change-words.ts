@@ -41,7 +41,7 @@ const rend = (
   end: number,
   words: IWordsMongo[],
   wrapper: HTMLDivElement,
-) => {
+): void => {
   for (let i = begin; i < end; i++) {
     if (typeof words[i] === 'object') {
       const card = document.createElement(Tags.DIV);
@@ -104,7 +104,10 @@ const rend = (
   }
 };
 
-const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
+const pointThisWords = (
+  words: IWordsMongo[],
+  wrapper: HTMLDivElement,
+): void => {
   wrapper.innerHTML = '';
 
   const heightClient = document.documentElement.clientHeight;
@@ -183,7 +186,7 @@ const selectCategory = async (
   categories: ICategoriesMongo[],
   wrapper: HTMLDivElement,
   event: Event,
-) => {
+): Promise<void> => {
   const target = event.target as HTMLSelectElement;
 
   store.dispatch(changeAdminCategory(target.value));

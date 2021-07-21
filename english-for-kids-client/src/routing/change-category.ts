@@ -19,7 +19,7 @@ const heightHeader = 71;
 const heightCard = 300;
 const correctionCoefficient = 4;
 
-const renderNewCard = (main: HTMLElement) => {
+const renderNewCard = (main: HTMLElement): void => {
   const newCard = document.createElement(Tags.DIV);
   newCard.className = 'categ-card categ-card-new';
   main.append(newCard);
@@ -36,7 +36,7 @@ const rend = (
   categories: ICategoriesMongo[],
   main: HTMLElement,
   arrWordsInCategory: IWordsMongo[][],
-) => {
+): void => {
   for (let i = begin; i < end; i++) {
     const card = document.createElement(Tags.DIV);
     card.className = 'categ-card observ';

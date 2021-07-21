@@ -21,7 +21,7 @@ import {
 import { ICategoriesMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 
-const renderTopLayer = (card: HTMLDivElement, action: string) => {
+const renderTopLayer = (card: HTMLDivElement, action: string): void => {
   const divsCard = getCategCardsAll();
   divsCard.forEach((div) => {
     const isTopLayer = div.lastElementChild as HTMLElement;
@@ -75,7 +75,7 @@ const renderTopLayer = (card: HTMLDivElement, action: string) => {
   divBtns.append(btnCreate);
 };
 
-const updateCategoryName = async (card: HTMLElement) => {
+const updateCategoryName = async (card: HTMLElement): Promise<void> => {
   if (inputFile() && inputText()) {
     const formData = new FormData();
 
@@ -93,14 +93,14 @@ const updateCategoryName = async (card: HTMLElement) => {
   }
 };
 
-const deleteCategoryByName = async (card: HTMLElement) => {
+const deleteCategoryByName = async (card: HTMLElement): Promise<void> => {
   const response = await deleteCategory(card.id);
   if (response) {
     onNavigate(RoutNames.CATEGORY);
   }
 };
 
-const createCategori = async () => {
+const createCategori = async (): Promise<void> => {
   if (inputFile() && inputText()) {
     const formData = new FormData();
 
@@ -123,7 +123,10 @@ const createCategori = async () => {
   }
 };
 
-const handlerClickPageCategory = (cards: ICategoriesMongo[], event: Event) => {
+const handlerClickPageCategory = (
+  cards: ICategoriesMongo[],
+  event: Event,
+): void => {
   const target = event.target as HTMLElement;
   const card = target.closest(`.${ElemClasses.CATEG_CARD}`) as HTMLDivElement;
   if (card) {

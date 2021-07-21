@@ -44,7 +44,7 @@ export const startGame = async (elem: HTMLElement): Promise<void> => {
   playingArrOfSounds(words);
 };
 
-const addAnswers = (item: IWordsMongo) => {
+const addAnswers = (item: IWordsMongo): void => {
   item.answers++;
   item.percent = (item.play / item.answers) * IN_INTEREST;
 };

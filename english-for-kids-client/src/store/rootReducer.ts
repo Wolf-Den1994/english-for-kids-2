@@ -1,13 +1,7 @@
 import { AnyAction } from 'redux';
 import { NumberPage, StateApp } from '../utils/enums';
-import { TypeStateApp } from '../utils/types';
+import { PositionState } from '../utils/interfaces';
 import { ADMIN_CATEGORY, CHANGE_MODE, CHANGE_PAGE } from './action-types';
-
-interface PositionState {
-  mode: TypeStateApp;
-  page: number;
-  admCateg: string;
-}
 
 const initialState: PositionState = {
   mode: StateApp.TRAIN,

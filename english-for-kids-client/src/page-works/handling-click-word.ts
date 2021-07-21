@@ -29,7 +29,7 @@ const renderTopLayer = (
   card: HTMLElement,
   action: string,
   words: IWordsMongo[],
-) => {
+): void => {
   const divsCard = getWordsCardsAll();
   divsCard.forEach((div) => {
     const isTopLayer = div.lastElementChild as HTMLElement;
@@ -127,7 +127,7 @@ const renderTopLayer = (
   divBtns.append(btnCreate);
 };
 
-const addWord = async () => {
+const addWord = async (): Promise<void> => {
   if (
     getInputWord() &&
     getInputTranslation() &&
@@ -166,14 +166,14 @@ const addWord = async () => {
   }
 };
 
-const deleteWordByName = async (card: HTMLDivElement) => {
+const deleteWordByName = async (card: HTMLDivElement): Promise<void> => {
   const response = await deleteWord(card.id);
   if (response) {
     onNavigate(`/${store.getState().admCateg.toLowerCase()}${RoutNames.WORDS}`);
   }
 };
 
-const updateCategoryName = async (card: HTMLDivElement) => {
+const updateCategoryName = async (card: HTMLDivElement): Promise<void> => {
   if (
     getInputWord() &&
     getInputTranslation() &&
@@ -210,7 +210,7 @@ const handlerClickPageWord = (
   words: IWordsMongo[],
   categories: ICategoriesMongo[],
   event: Event,
-) => {
+): void => {
   const target = event.target as HTMLElement;
   const card = target.closest(`.${ElemClasses.WORDS_CARD}`) as HTMLDivElement;
   if (checkClass(target, ElemClasses.WORDS_PLAY_SOUND)) {

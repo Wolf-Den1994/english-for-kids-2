@@ -2,12 +2,9 @@ import { renderMain } from '../main-page/render-main';
 import { workCategPage, workWordsPage } from '../page-works/work-categ';
 import { store } from '../store/store';
 import { RoutNames } from '../utils/enums';
+import { IRoutes } from '../utils/interfaces';
 import { changeCategory, renderCategPage } from './change-category';
 import { changeWords, renderWordsPage } from './change-words';
-
-interface IRoutes {
-  [key: string]: string | Promise<void>;
-}
 
 let nestedRoutsByWords = `/${store.getState().admCateg.toLowerCase()}${
   RoutNames.WORDS
