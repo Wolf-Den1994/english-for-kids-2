@@ -106,10 +106,8 @@ export const render = (
 export const renderSubject = async (page: number): Promise<void> => {
   const index = page - 1;
   const categoryName = cards[CATEGORY][index];
-  // console.log(categoryName)
   const words = await getWordsByCategory(categoryName);
   cleanField();
 
   render(LayoutPage.SUBJECT, index, words, categoryName);
-  // console.log('11111111')
 };

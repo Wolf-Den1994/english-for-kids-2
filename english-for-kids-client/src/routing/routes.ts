@@ -25,8 +25,6 @@ export const onNavigate = (pathname: string): void => {
   routes[nestedRoutsByWords] = changeWords;
   window.history.pushState({}, pathname, window.location.origin + pathname);
   if (typeof routes[window.location.pathname] === 'string') {
-    // console.log(routes)
-    // console.log(routes[pathname])
     document.body.innerHTML = routes[pathname] as string;
   } else {
     document.body.innerHTML = '';

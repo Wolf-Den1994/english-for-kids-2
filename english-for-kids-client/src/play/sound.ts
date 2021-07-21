@@ -29,6 +29,5 @@ export const playSound = (page: ICards[], word: string): void => {
 };
 
 export const playSoundServer = (link: string): void => {
-  // console.log(link)
   sound(link, IndexSounds.FIRST);
 };

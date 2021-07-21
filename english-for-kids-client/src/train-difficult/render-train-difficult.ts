@@ -13,12 +13,10 @@ export const arrDifficultWord: IWordsMongo[] = [];
 const NUMBER_CARDS_DISPLAYED = 8;
 
 export const renderTrainDifficult = async (): Promise<void> => {
-  // const words = await getWords();
   copyFullCards.length = 0;
   arrDifficultWord.length = 0;
   let count = 0;
   copyFullCards.push(...fullCards.slice());
-  // console.log(copyFullCards);
 
   copyFullCards.sort((a, b) => (a.fails > b.fails ? -1 : 1));
   copyFullCards.forEach((item) => {

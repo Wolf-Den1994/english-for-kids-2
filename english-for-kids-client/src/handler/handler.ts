@@ -43,15 +43,11 @@ const addListener = (card: HTMLDivElement): void => {
 };
 
 const categotySelection = (card: HTMLDivElement): void => {
-  // const word: string = getWord(card);
-  // const index = imgCategories.indexOf(word) + 1;
   const categoryNames = cards[CATEGORY];
-  // console.log(categoryNames)
   if (card) {
     const index = categoryNames.indexOf(card.id) + 1;
     store.dispatch(changePage(index));
     changeActiveLink(index);
-    // console.log(index)
     renderSubject(index);
   }
 };
@@ -68,15 +64,12 @@ const workWithCards = (
     } else if (checkClasses(parent, elem, card, ElemClasses.SUBJECT)) {
       if (front) {
         const word: string = getWord(front);
-        // const page = cards[store.getState().page] as ICards[];
         fullCards.forEach((item) => {
           if (item.word === word) {
             item.train++;
           }
         });
         dispatchInfo(fullCards);
-        // playSound(page, word);
-        // console.log(card)
         playSoundServer(card.id);
       }
     } else if (checkClass(elem, ElemClasses.SVG)) {

@@ -1,7 +1,6 @@
 import { getWordsByCategory } from '../api/api';
 import cards from '../cards';
 import { objGame } from '../control/obj-game';
-import { objNumberPage } from '../control/obj-page';
 import { dispatchInfo, fullCards } from '../control/obj-statistic';
 import { renderFinish } from '../finish/finish';
 import { store } from '../store/store';
@@ -48,15 +47,9 @@ export const startGame = async (elem: HTMLElement): Promise<void> => {
     arrWords.push(words[i].word);
   }
   changeClassList(elem, ElemClasses.BTN_START_GAME, ElemClasses.REPEAT);
-  if (store.getState().page === objNumberPage.difficult) {
-    // const randomAudios = generateRandom(arrDifficultWord);
-    // playingArrOfSounds(randomAudios);
-  } else {
-    // const page = cards[store.getState().page] as ICards[];
-    const randomWordsForSound = generateRandom(arrWords);
-    objGame.arrAudios = randomWordsForSound;
-    playingArrOfSounds(words);
-  }
+  const randomWordsForSound = generateRandom(arrWords);
+  objGame.arrAudios = randomWordsForSound;
+  playingArrOfSounds(words);
 };
 
 const addAnswers = (item: IWordsMongo) => {
@@ -86,7 +79,6 @@ export const gameProcess = async (elem: HTMLElement): Promise<void> => {
       if (objGame.arrAudios.length) {
         setTimeout(() => {
           playingArrOfSounds(words);
-          // sound(objGame.arrAudios[0], IndexSounds.FIRST);
         }, DELAY_PLAY_SOUND);
       } else {
         renderFinish();

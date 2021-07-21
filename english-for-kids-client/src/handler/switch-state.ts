@@ -59,10 +59,7 @@ const changeStateOnPlay = (arr: IWordsMongo[], elems: IHTMLElems): void => {
 export const switchState = async (event: Event): Promise<void> => {
   const elems = getArrsElem();
   const target = event.target as HTMLInputElement;
-  // const categories = await getCategory();
   const categoryName = list[store.getState().page];
-  // console.log('store.getState().page', store.getState().page)
-  // console.log('categoryName', categoryName)
   const words = await getWordsByCategory(categoryName);
   if (target.checked) {
     store.dispatch(changeMode(StateApp.TRAIN));
@@ -73,9 +70,6 @@ export const switchState = async (event: Event): Promise<void> => {
       changeStateOnTrain(arrDifficultWord, elems);
     }
     if (isPageCategory()) {
-      // console.log(store.getState().page, objNumberPage.main);
-      // console.log(store.getState().page, objNumberPage.statistic);
-      // console.log(store.getState().page, objNumberPage.difficult);
       changeStateOnTrain(words, elems);
     }
   } else {

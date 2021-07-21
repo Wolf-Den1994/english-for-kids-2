@@ -68,7 +68,6 @@ const rend = (
   }
 
   if (end >= categories.length) {
-    // console.log('end', end, 'categories.length', categories.length);
     renderNewCard(main);
   }
 };
@@ -77,23 +76,16 @@ export const renderCategPage = async (): Promise<void> => {
   removeClassList(document.body, ElemClasses.HIDDEN_MODAL);
 
   const categories = await getCategory();
-  // const words = await getWords();
   const main = document.querySelector('.categ-main') as HTMLElement;
   const arrWordsOnCategory = [];
 
   for (let i = 0; i < categories.length; i++) {
-    // const categLength = await ;
-    // console.log(categLength)
     arrWordsOnCategory.push(getWordsByCategory(categories[i].categoryName));
   }
   const arrWordsInCategory = await Promise.all(arrWordsOnCategory);
-  // console.log(arrWordsOnCategory)
 
   let start = Math.ceil((document.documentElement.clientHeight - 71) / 300) + 4;
   let mx = start;
-
-  // console.log(start);
-  // console.log(document.documentElement.clientHeight);
 
   let counterObserver = 0;
 
@@ -104,15 +96,10 @@ export const renderCategPage = async (): Promise<void> => {
   const observer = new IntersectionObserver(
     (entries, observ) => {
       entries.forEach((entry) => {
-        // console.log('entries count');
         if (entry.isIntersecting) {
           counterObserver++;
           removeClassList(entry.target, 'observ');
-          // console.log('entry isIntersecting');
-          // console.log('start', start, 'mx', mx);
-          // console.log(counterObserver + 1, start);
           if (counterObserver + 1 === start) {
-            // console.log('mx', mx, 'categories.length', categories.length);
             if (mx < categories.length) {
               addClassList(document.body, 'hidden');
 
@@ -133,12 +120,10 @@ export const renderCategPage = async (): Promise<void> => {
               cards = [
                 ...document.querySelectorAll('.categ-card'),
               ] as HTMLElement[];
-              // console.log(cards.length);
               cards.forEach((card) => {
                 if (checkClass(card, 'observ')) {
                   observer.observe(card);
                 }
-                // console.log('card count');
               });
             }, 650);
           }

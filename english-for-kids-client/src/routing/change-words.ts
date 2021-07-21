@@ -87,7 +87,6 @@ const rend = (
   }
 
   if (end >= words.length) {
-    // console.log('end', end, 'words.length', words.length);
     renderNewCard(wrapper);
   }
 };
@@ -98,8 +97,6 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
   let start =
     Math.ceil((document.documentElement.clientHeight - 151) / 400) + 4;
   let mx = start;
-
-  // window.addEventListener('scroll', () => {});
 
   let counterObserver = 0;
 
@@ -112,7 +109,6 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           counterObserver++;
-          // console.log(counterObserver + 1, start)
           if (counterObserver + 1 === start) {
             if (mx < words.length) {
               addClassList(document.body, 'hidden');
@@ -134,12 +130,10 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
               cards = [
                 ...document.querySelectorAll('.words-card'),
               ] as HTMLElement[];
-              // console.log(cards.length);
               cards.forEach((card) => {
                 if (checkClass(card, 'observ')) {
                   observer.observe(card);
                 }
-                // console.log('card count');
               });
             }, 650);
           }
@@ -154,7 +148,6 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
     if (checkClass(card, 'observ')) {
       observer.observe(card);
     }
-    // console.log('card count');
   });
 
   const audio1 = document.createElement(Tags.AUDIO);
@@ -182,14 +175,6 @@ const selectCategory = async (
 ) => {
   const target = event.target as HTMLSelectElement;
 
-  // let index;
-  // for (let i = 0; i < categories.length; i++) {
-  //   if (categories[i].categoryName === target.value) {
-  //     index = i
-  //   }
-  // }
-
-  // const index = words[CATEGORY].indexOf(target.value);
   store.dispatch(changeAdminCategory(target.value));
   onNavigate(`/${store.getState().admCateg.toLowerCase()}/words`);
   const newWords = await getWordsByCategory(store.getState().admCateg);
@@ -200,10 +185,8 @@ const selectCategory = async (
 export const changeWords = `${head('words')}`;
 
 export const renderWordsPage = async (): Promise<void> => {
-  // console.log(store.getState().admCateg);
   removeClassList(document.body, ElemClasses.HIDDEN_MODAL);
 
-  // const cards = await getCards('/api/cards');
   const categories = await getCategory();
   const words = await getWordsByCategory(store.getState().admCateg);
   const main = document.querySelector('.words-main') as HTMLElement;
@@ -237,13 +220,6 @@ export const renderWordsPage = async (): Promise<void> => {
     selectCategory.bind(null, words, categories, wrapperCards),
   );
 
-  // let index;
-  // for (let i = 0; i < categories.length; i++) {
-  //   if (categories[i].categoryName === store.getState().admCateg) {
-  //     index = i
-  //   }
-  // }
-  // const index = cards[CATEGORY].indexOf(store.getState().admCateg);
   selectTitle().value = `${store.getState().admCateg}`;
 
   pointThisWords(words, wrapperCards);

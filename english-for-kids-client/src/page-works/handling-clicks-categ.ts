@@ -64,7 +64,6 @@ const renderTopLayer = (card: HTMLDivElement, action: string) => {
 };
 
 const updateCategoryName = async (card: HTMLElement) => {
-  // if (inputText().value) {
   if (inputFile() && inputText()) {
     const formData = new FormData();
 
@@ -80,7 +79,6 @@ const updateCategoryName = async (card: HTMLElement) => {
       onNavigate('/category');
     }
   }
-  // }
 };
 
 const deleteCategoryByName = async (card: HTMLElement) => {
@@ -97,7 +95,6 @@ const createCategori = async () => {
     const image = inputFile();
     const srcImage = image.files as FileList;
     const imageFile = srcImage[0];
-    // console.log(imageSrc);
 
     formData.set('name', inputText().value);
     formData.set('image', imageFile);
@@ -119,13 +116,11 @@ const handlerClickPageCategory = (cards: ICategoriesMongo[], event: Event) => {
   const card = target.closest('.categ-card') as HTMLDivElement;
   if (card) {
     const idCard = card.id;
-    // const index = cards[CATEGORY].indexOf(idCard);
     if (checkClass(target, 'categ-bnt-add')) {
       store.dispatch(changeAdminCategory(`${idCard}`));
       onNavigate(`/${store.getState().admCateg.toLowerCase()}/words`);
     } else if (checkClass(target, 'categ-bnt-update')) {
       renderTopLayer(card, 'update');
-      // cards[CATEGORY].map(item => item = item === idCard ? idCard : item)
     } else if (checkClass(target, 'categ-top-layer-btn-cancel')) {
       const topLayer = card.lastElementChild as HTMLElement;
       topLayer.remove();

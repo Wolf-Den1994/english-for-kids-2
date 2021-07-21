@@ -19,26 +19,20 @@ export const handlerMenu = async (event: Event): Promise<void> => {
   const target = event.target as HTMLElement;
   if (checkClass(target, ElemClasses.MENU_LINK)) {
     const index = list.indexOf(target.innerHTML);
-    // console.log(list.length)
-    // console.log(index)
     changeActiveLink(target);
     if (index === 0) {
       store.dispatch(changePage(NumberPage.MAIN));
       renderCategory();
     } else if (index <= list.length - 3) {
-      // console.log('this page', list[index])
       store.dispatch(changePage(index));
       await renderSubject(store.getState().page);
     } else if (index === list.length - 2) {
-      // console.log('this page statistic', list[index])
       store.dispatch(changePage(objNumberPage.statistic));
       renderStatistic(fullCards, Order.DESC);
     } else {
-      // console.log('this page login', list[index])
       store.dispatch(changePage(objNumberPage.login));
       await openLoginModal();
     }
-    // console.log('sssssssssss')
     closeSidebar();
   }
 };
@@ -63,7 +57,6 @@ function openSidebar(): void {
 
 function closeSidebar(): void {
   removeClassList(document.body, ElemClasses.HIDDEN);
-  // console.log(store.getState().page, '<', list.length - 2);
   if (store.getState().page < list.length - 1) {
     input().checked = false;
     updateClassList(sidebar(), label(), ElemClasses.HIDDEN);
@@ -72,6 +65,3 @@ function closeSidebar(): void {
     menu().removeEventListener(Events.CLICK, handlerMenu);
   }
 }
-
-// label().addEventListener(Events.CLICK, handlerSideBar);
-// menu().addEventListener(Events.CLICK, handlerMenu);

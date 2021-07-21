@@ -29,21 +29,7 @@ const renderTopLayer = (
     }
   });
 
-  // let index;
-  // for (let i = 0; i < categories.length; i++) {
-  //   if (categories[i].categoryName === store.getState().admCateg) {
-  //     index = i;
-  //   }
-  // }
-
-  // const index = cards[CATEGORY].indexOf(store.getState().admCateg);
-  // console.log(index)
-  // console.log(card.id)
-  // console.log(cards)
-  // const arr = categories[index as number + 1];
-  // console.log('arr', arr)
   const objWordDesired = words.find((item) => item.word === card.id);
-  // console.log('objWordDesired', objWordDesired)
 
   addClassList(card, 'word-hidden');
 
@@ -156,7 +142,6 @@ const addWord = async () => {
     formData.set('image', imageFile);
 
     const response = await createWord(formData, getInputWord().value);
-    // console.log(response)
     if (response === 'duplicate') {
       getInputWord().value = 'duplicate';
       addClassList(getInputWord(), 'duplicate');
@@ -214,8 +199,6 @@ const handlerClickPageWord = (
 ) => {
   const target = event.target as HTMLElement;
   const card = target.closest('.words-card') as HTMLDivElement;
-  // const idCard = card.id;
-  // console.log(idCard)
   if (checkClass(target, 'words-play-sound')) {
     const wordsSound = target.closest('.words-sound') as HTMLDivElement;
     const fileName = wordsSound.innerText.split(': ')[1];
