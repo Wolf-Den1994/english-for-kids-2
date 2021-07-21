@@ -5,12 +5,25 @@ import { changeAdminCategory } from '../store/actions';
 import { store } from '../store/store';
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
-import { ElemClasses, Events, Tags } from '../utils/enums';
+import {
+  DELAY_LOAD_HIDDEN,
+  DELAY_LOAD_SHOW,
+  NUMBER_CIRCLE,
+} from '../utils/consts';
+import { ElemClasses, Events, RoutNames, Tags } from '../utils/enums';
 import { getLoader } from '../utils/get-elems';
-import { selectTitle } from '../utils/get-elems-words';
+import {
+  getMainWords,
+  getWordsCardsAll,
+  selectTitle,
+} from '../utils/get-elems-words';
 import { ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 import { onNavigate } from './routes';
+
+const heightHeader = 151;
+const heightCard = 400;
+const correctionCoefficient = 4;
 
 const renderNewCard = (wrapper: HTMLDivElement): void => {
   const card = document.createElement(Tags.DIV);
@@ -94,15 +107,17 @@ const rend = (
 const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
   wrapper.innerHTML = '';
 
+  const heightClient = document.documentElement.clientHeight;
   let start =
-    Math.ceil((document.documentElement.clientHeight - 151) / 400) + 4;
+    Math.ceil((heightClient - heightHeader) / heightCard) +
+    correctionCoefficient;
   let mx = start;
 
   let counterObserver = 0;
 
   rend(0, start, words, wrapper);
 
-  let cards = [...document.querySelectorAll('.words-card')] as HTMLElement[];
+  let cards = [...getWordsCardsAll()] as HTMLElement[];
 
   const observer = new IntersectionObserver(
     (entries, observ) => {
@@ -111,11 +126,11 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
           counterObserver++;
           if (counterObserver + 1 === start) {
             if (mx < words.length) {
-              addClassList(document.body, 'hidden');
+              addClassList(document.body, ElemClasses.HIDDEN);
 
-              getLoader().classList.remove('hidden');
+              getLoader().classList.remove(ElemClasses.HIDDEN);
               setTimeout(() => {
-                getLoader().classList.add('hidden');
+                getLoader().classList.add(ElemClasses.HIDDEN);
                 if (mx + mx <= words.length) {
                   mx += start;
                 } else {
@@ -123,19 +138,17 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
                 }
                 rend(start, mx, words, wrapper);
                 start += start;
-              }, 500);
+              }, DELAY_LOAD_SHOW);
             }
             setTimeout(() => {
-              removeClassList(document.body, 'hidden');
-              cards = [
-                ...document.querySelectorAll('.words-card'),
-              ] as HTMLElement[];
+              removeClassList(document.body, ElemClasses.HIDDEN);
+              cards = [...getWordsCardsAll()] as HTMLElement[];
               cards.forEach((card) => {
-                if (checkClass(card, 'observ')) {
+                if (checkClass(card, ElemClasses.OBSERV)) {
                   observer.observe(card);
                 }
               });
-            }, 650);
+            }, DELAY_LOAD_HIDDEN);
           }
           observ.unobserve(entry.target);
         }
@@ -145,7 +158,7 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
   );
 
   cards.forEach((card) => {
-    if (checkClass(card, 'observ')) {
+    if (checkClass(card, ElemClasses.OBSERV)) {
       observer.observe(card);
     }
   });
@@ -153,8 +166,6 @@ const pointThisWords = (words: IWordsMongo[], wrapper: HTMLDivElement) => {
   const audio1 = document.createElement(Tags.AUDIO);
   audio1.className = 'audio1';
   wrapper.append(audio1);
-
-  const NUMBER_CIRCLE = 3;
 
   const loaderScroll = document.createElement(Tags.DIV);
   loaderScroll.className = 'loader hidden';
@@ -176,7 +187,7 @@ const selectCategory = async (
   const target = event.target as HTMLSelectElement;
 
   store.dispatch(changeAdminCategory(target.value));
-  onNavigate(`/${store.getState().admCateg.toLowerCase()}/words`);
+  onNavigate(`/${store.getState().admCateg.toLowerCase()}${RoutNames.WORDS}`);
   const newWords = await getWordsByCategory(store.getState().admCateg);
 
   pointThisWords(newWords, wrapper);
@@ -189,7 +200,7 @@ export const renderWordsPage = async (): Promise<void> => {
 
   const categories = await getCategory();
   const words = await getWordsByCategory(store.getState().admCateg);
-  const main = document.querySelector('.words-main') as HTMLElement;
+  const main = getMainWords();
 
   const wrapperSelect = document.createElement(Tags.DIV);
   wrapperSelect.className = 'words-wrapper-select';
@@ -200,12 +211,12 @@ export const renderWordsPage = async (): Promise<void> => {
   categoryTitle.innerHTML = 'Category';
   wrapperSelect.append(categoryTitle);
 
-  const ElemselectTitle = document.createElement('select');
+  const ElemselectTitle = document.createElement(Tags.SELECT);
   ElemselectTitle.className = 'words-select-title';
   wrapperSelect.append(ElemselectTitle);
 
   for (let i = 0; i < categories.length; i++) {
-    const optionTitle = document.createElement('option');
+    const optionTitle = document.createElement(Tags.OPTION);
     optionTitle.value = `${categories[i].categoryName}`;
     optionTitle.innerHTML = `${categories[i].categoryName}`;
     ElemselectTitle.append(optionTitle);

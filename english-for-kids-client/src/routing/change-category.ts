@@ -3,12 +3,21 @@ import { handlingClicks } from '../page-works/handling-clicks-categ';
 import { head } from '../shareit/head';
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
+import {
+  DELAY_LOAD_HIDDEN,
+  DELAY_LOAD_SHOW,
+  NUMBER_CIRCLE,
+} from '../utils/consts';
 import { ElemClasses, Tags } from '../utils/enums';
 import { getLoader } from '../utils/get-elems';
+import { getCategCardsAll, getMainCateg } from '../utils/get-elems-categ';
 import { ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 
 export const changeCategory = `${head('categ')}`;
+const heightHeader = 71;
+const heightCard = 300;
+const correctionCoefficient = 4;
 
 const renderNewCard = (main: HTMLElement) => {
   const newCard = document.createElement(Tags.DIV);
@@ -28,7 +37,6 @@ const rend = (
   main: HTMLElement,
   arrWordsInCategory: IWordsMongo[][],
 ) => {
-  // console.log(begin, end);
   for (let i = begin; i < end; i++) {
     const card = document.createElement(Tags.DIV);
     card.className = 'categ-card observ';
@@ -76,7 +84,7 @@ export const renderCategPage = async (): Promise<void> => {
   removeClassList(document.body, ElemClasses.HIDDEN_MODAL);
 
   const categories = await getCategory();
-  const main = document.querySelector('.categ-main') as HTMLElement;
+  const main = getMainCateg();
   const arrWordsOnCategory = [];
 
   for (let i = 0; i < categories.length; i++) {
@@ -84,28 +92,31 @@ export const renderCategPage = async (): Promise<void> => {
   }
   const arrWordsInCategory = await Promise.all(arrWordsOnCategory);
 
-  let start = Math.ceil((document.documentElement.clientHeight - 71) / 300) + 4;
+  const heightClient = document.documentElement.clientHeight;
+  let start =
+    Math.ceil((heightClient - heightHeader) / heightCard) +
+    correctionCoefficient;
   let mx = start;
 
   let counterObserver = 0;
 
   rend(0, start, categories, main, arrWordsInCategory);
 
-  let cards = [...document.querySelectorAll('.categ-card')] as HTMLElement[];
+  let cards = [...getCategCardsAll()] as HTMLElement[];
 
   const observer = new IntersectionObserver(
     (entries, observ) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           counterObserver++;
-          removeClassList(entry.target, 'observ');
+          removeClassList(entry.target, ElemClasses.OBSERV);
           if (counterObserver + 1 === start) {
             if (mx < categories.length) {
-              addClassList(document.body, 'hidden');
+              addClassList(document.body, ElemClasses.HIDDEN);
+              removeClassList(getLoader(), ElemClasses.HIDDEN);
 
-              getLoader().classList.remove('hidden');
               setTimeout(() => {
-                getLoader().classList.add('hidden');
+                addClassList(getLoader(), ElemClasses.HIDDEN);
                 if (mx + mx <= categories.length) {
                   mx += start;
                 } else {
@@ -113,21 +124,18 @@ export const renderCategPage = async (): Promise<void> => {
                 }
                 rend(start, mx, categories, main, arrWordsInCategory);
                 start += start;
-              }, 500);
+              }, DELAY_LOAD_SHOW);
             }
             setTimeout(() => {
-              removeClassList(document.body, 'hidden');
-              cards = [
-                ...document.querySelectorAll('.categ-card'),
-              ] as HTMLElement[];
+              removeClassList(document.body, ElemClasses.HIDDEN);
+              cards = [...getCategCardsAll()] as HTMLElement[];
               cards.forEach((card) => {
-                if (checkClass(card, 'observ')) {
+                if (checkClass(card, ElemClasses.OBSERV)) {
                   observer.observe(card);
                 }
               });
-            }, 650);
+            }, DELAY_LOAD_HIDDEN);
           }
-          // }
           observ.unobserve(entry.target);
         }
       });
@@ -136,12 +144,10 @@ export const renderCategPage = async (): Promise<void> => {
   );
 
   cards.forEach((card) => {
-    if (checkClass(card, 'observ')) {
+    if (checkClass(card, ElemClasses.OBSERV)) {
       observer.observe(card);
     }
   });
-
-  const NUMBER_CIRCLE = 3;
 
   const loaderScroll = document.createElement(Tags.DIV);
   loaderScroll.className = 'loader hidden';

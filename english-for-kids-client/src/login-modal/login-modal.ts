@@ -3,7 +3,7 @@ import { onNavigate } from '../routing/routes';
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
 import { LOCAL_STORAGE_USER_ADMIN } from '../utils/consts';
-import { ElemClasses, Events, Tags } from '../utils/enums';
+import { ElemClasses, Events, RoutNames, Tags } from '../utils/enums';
 import { getModal, header, overlay } from '../utils/get-elems';
 import { removeClassList } from '../utils/remove-class';
 
@@ -66,7 +66,7 @@ const checkUser = async (login: string, password: string): Promise<void> => {
     const userData = await loginHandler(login, password);
     if (userData && userData.token) {
       localStorage.setItem(LOCAL_STORAGE_USER_ADMIN, userData.token);
-      onNavigate('/category');
+      onNavigate(RoutNames.CATEGORY);
     }
   }
 };
@@ -85,7 +85,7 @@ export const openLoginModal = async (): Promise<void> => {
   const admin = localStorage.getItem(LOCAL_STORAGE_USER_ADMIN);
 
   if (admin) {
-    onNavigate('/category');
+    onNavigate(RoutNames.CATEGORY);
   } else {
     renderLoginModal();
     addClassList(overlay(), ElemClasses.HIDDEN_MODAL);

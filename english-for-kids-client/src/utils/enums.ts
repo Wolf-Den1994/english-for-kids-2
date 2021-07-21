@@ -26,6 +26,31 @@ export enum ElemClasses {
   INPUT_PASSWORD = 'input-password',
   BTN_CANCEL = 'btn-cancel',
   BTN_LOGIN = 'btn-login',
+  DISABLED = 'disabled',
+  WORD_TOP_LAYER = 'word-top-layer',
+  WORD_HIDDEN = 'word-hidden',
+  DUPLICATE = 'duplicate',
+  WORDS_PLAY_SOUND = 'words-play-sound',
+  WORDS_CARD = 'words-card',
+  WORDS_SOUND = 'words-sound',
+  WORDS_BTN_CHANGE = 'words-btn-change',
+  WORD_TOP_LAYER_BTN_CANCEL = 'word-top-layer-btn-cancel',
+  WORDS_CARD_NEW = 'words-card-new',
+  WORD_TOP_LAYER_BTN_CREATE = 'word-top-layer-btn-create',
+  WORDS_BTN_REMOVE = 'words-bnt-remove',
+  WORD_TOP_LAYER_BTN_UPDATE = 'word-top-layer-btn-update',
+  CATEG_TOP_LAYER = 'categ-top-layer',
+  CATEG_HIDDEN = 'categ-hidden',
+  CATEG_CARD = 'categ-card',
+  CATEG_BTN_ADD = 'categ-bnt-add',
+  CATEG_BTN_UPDATE = 'categ-bnt-update',
+  CATEG_TOP_LAYER_BTN_CANCEL = 'categ-top-layer-btn-cancel',
+  CATEG_TOP_LAYER_BTN_UPDATE = 'categ-top-layer-btn-update',
+  CATEG_BTN_REMOVE = 'categ-bnt-remove',
+  CATEG_CARD_NEW = 'categ-card-new',
+  CATEG_TOP_LAYER_BTN_CREATE = 'categ-top-layer-btn-create',
+  CATEG_LINK_ACTIVE = 'categ-link-active',
+  OBSERV = 'observ',
 }
 
 export enum ElemId {
@@ -55,6 +80,8 @@ export enum Tags {
   TH = 'th',
   TD = 'td',
   FOOTER = 'footer',
+  SELECT = 'select',
+  OPTION = 'option',
 }
 
 export enum Order {
@@ -106,4 +133,24 @@ export enum SortTitle {
 export enum LayoutPage {
   SUBJECT = 'subject',
   DIFFICULT = 'diff',
+}
+
+export enum RoutNames {
+  MAIN = '/',
+  CATEGORY = '/category',
+  WORDS = '/words',
+}
+
+export enum TopLayoutView {
+  UPDATE = 'update',
+  CREATE = 'create',
+}
+
+export enum FormDataNames {
+  WORD = 'word',
+  TRANSLATE = 'translate',
+  CATEGORY = 'category',
+  SOUND = 'sound',
+  IMAGE = 'image',
+  NAME = 'name',
 }

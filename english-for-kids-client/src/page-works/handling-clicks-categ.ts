@@ -4,22 +4,34 @@ import { changeAdminCategory } from '../store/actions';
 import { store } from '../store/store';
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
-import { Events, Tags } from '../utils/enums';
-import { inputFile, inputText } from '../utils/get-elems-categ';
+import { DUPLICATE } from '../utils/consts';
+import {
+  ElemClasses,
+  Events,
+  FormDataNames,
+  RoutNames,
+  Tags,
+  TopLayoutView,
+} from '../utils/enums';
+import {
+  getCategCardsAll,
+  inputFile,
+  inputText,
+} from '../utils/get-elems-categ';
 import { ICategoriesMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
 
 const renderTopLayer = (card: HTMLDivElement, action: string) => {
-  const divsCard = document.querySelectorAll('.categ-card');
+  const divsCard = getCategCardsAll();
   divsCard.forEach((div) => {
     const isTopLayer = div.lastElementChild as HTMLElement;
-    if (checkClass(isTopLayer, 'categ-top-layer')) {
+    if (checkClass(isTopLayer, ElemClasses.CATEG_TOP_LAYER)) {
       isTopLayer.remove();
-      removeClassList(div, 'categ-hidden');
+      removeClassList(div, ElemClasses.CATEG_HIDDEN);
     }
   });
 
-  addClassList(card, 'categ-hidden');
+  addClassList(card, ElemClasses.CATEG_HIDDEN);
 
   const topLayer = document.createElement(Tags.DIV);
   topLayer.className = 'categ-top-layer';
@@ -56,10 +68,10 @@ const renderTopLayer = (card: HTMLDivElement, action: string) => {
 
   const btnCreate = document.createElement(Tags.BUTTON);
   btnCreate.className =
-    action === 'update'
+    action === TopLayoutView.UPDATE
       ? 'categ-top-layer-btn-update'
       : 'categ-top-layer-btn-create';
-  btnCreate.innerHTML = action === 'update' ? 'Update' : 'Create';
+  btnCreate.innerHTML = action === TopLayoutView.UPDATE ? 'Update' : 'Create';
   divBtns.append(btnCreate);
 };
 
@@ -71,12 +83,12 @@ const updateCategoryName = async (card: HTMLElement) => {
     const srcImage = image.files as FileList;
     const imageFile = srcImage[0];
 
-    formData.set('name', inputText().value);
-    formData.set('image', imageFile);
+    formData.set(FormDataNames.NAME, inputText().value);
+    formData.set(FormDataNames.IMAGE, imageFile);
 
     const response = await putCategoryByName(formData, card.id);
     if (response) {
-      onNavigate('/category');
+      onNavigate(RoutNames.CATEGORY);
     }
   }
 };
@@ -84,7 +96,7 @@ const updateCategoryName = async (card: HTMLElement) => {
 const deleteCategoryByName = async (card: HTMLElement) => {
   const response = await deleteCategory(card.id);
   if (response) {
-    onNavigate('/category');
+    onNavigate(RoutNames.CATEGORY);
   }
 };
 
@@ -96,16 +108,16 @@ const createCategori = async () => {
     const srcImage = image.files as FileList;
     const imageFile = srcImage[0];
 
-    formData.set('name', inputText().value);
-    formData.set('image', imageFile);
+    formData.set(FormDataNames.NAME, inputText().value);
+    formData.set(FormDataNames.IMAGE, imageFile);
     const response = await createCategory(formData, inputText().value);
-    if (response === 'duplicate') {
-      inputText().value = 'duplicate';
-      addClassList(inputText(), 'duplicate');
+    if (response === DUPLICATE) {
+      inputText().value = DUPLICATE;
+      addClassList(inputText(), ElemClasses.DUPLICATE);
     } else {
-      removeClassList(inputFile(), 'duplicate');
+      removeClassList(inputFile(), ElemClasses.DUPLICATE);
       if (response) {
-        onNavigate('/category');
+        onNavigate(RoutNames.CATEGORY);
       }
     }
   }
@@ -113,24 +125,26 @@ const createCategori = async () => {
 
 const handlerClickPageCategory = (cards: ICategoriesMongo[], event: Event) => {
   const target = event.target as HTMLElement;
-  const card = target.closest('.categ-card') as HTMLDivElement;
+  const card = target.closest(`.${ElemClasses.CATEG_CARD}`) as HTMLDivElement;
   if (card) {
     const idCard = card.id;
-    if (checkClass(target, 'categ-bnt-add')) {
+    if (checkClass(target, ElemClasses.CATEG_BTN_ADD)) {
       store.dispatch(changeAdminCategory(`${idCard}`));
-      onNavigate(`/${store.getState().admCateg.toLowerCase()}/words`);
-    } else if (checkClass(target, 'categ-bnt-update')) {
-      renderTopLayer(card, 'update');
-    } else if (checkClass(target, 'categ-top-layer-btn-cancel')) {
+      onNavigate(
+        `/${store.getState().admCateg.toLowerCase()}${RoutNames.WORDS}`,
+      );
+    } else if (checkClass(target, ElemClasses.CATEG_BTN_UPDATE)) {
+      renderTopLayer(card, TopLayoutView.UPDATE);
+    } else if (checkClass(target, ElemClasses.CATEG_TOP_LAYER_BTN_CANCEL)) {
       const topLayer = card.lastElementChild as HTMLElement;
       topLayer.remove();
-    } else if (checkClass(target, 'categ-top-layer-btn-update')) {
+    } else if (checkClass(target, ElemClasses.CATEG_TOP_LAYER_BTN_UPDATE)) {
       updateCategoryName(card);
-    } else if (checkClass(target, 'categ-bnt-remove')) {
+    } else if (checkClass(target, ElemClasses.CATEG_BTN_REMOVE)) {
       deleteCategoryByName(card);
-    } else if (checkClass(target, 'categ-card-new')) {
-      renderTopLayer(card, 'create');
-    } else if (checkClass(target, 'categ-top-layer-btn-create')) {
+    } else if (checkClass(target, ElemClasses.CATEG_CARD_NEW)) {
+      renderTopLayer(card, TopLayoutView.CREATE);
+    } else if (checkClass(target, ElemClasses.CATEG_TOP_LAYER_BTN_CREATE)) {
       createCategori();
     }
   }

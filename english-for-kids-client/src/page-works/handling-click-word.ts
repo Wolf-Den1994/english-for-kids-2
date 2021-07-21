@@ -4,12 +4,22 @@ import { onNavigate } from '../routing/routes';
 import { store } from '../store/store';
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
-import { Events, IndexSounds, Tags } from '../utils/enums';
+import { DUPLICATE } from '../utils/consts';
+import {
+  ElemClasses,
+  Events,
+  FormDataNames,
+  IndexSounds,
+  RoutNames,
+  Tags,
+  TopLayoutView,
+} from '../utils/enums';
 import {
   getInputImage,
   getInputSound,
   getInputTranslation,
   getInputWord,
+  getWordsCardsAll,
   selectTitle,
 } from '../utils/get-elems-words';
 import { ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
@@ -20,21 +30,21 @@ const renderTopLayer = (
   action: string,
   words: IWordsMongo[],
 ) => {
-  const divsCard = document.querySelectorAll('.words-card');
+  const divsCard = getWordsCardsAll();
   divsCard.forEach((div) => {
     const isTopLayer = div.lastElementChild as HTMLElement;
-    if (checkClass(isTopLayer, 'word-top-layer')) {
+    if (checkClass(isTopLayer, ElemClasses.WORD_TOP_LAYER)) {
       isTopLayer.remove();
-      removeClassList(div, 'word-hidden');
+      removeClassList(div, ElemClasses.WORD_HIDDEN);
     }
   });
 
   const objWordDesired = words.find((item) => item.word === card.id);
 
-  addClassList(card, 'word-hidden');
+  addClassList(card, ElemClasses.WORD_HIDDEN);
 
   const topLayer = document.createElement(Tags.DIV);
-  topLayer.className = 'word-top-layer';
+  topLayer.className = ElemClasses.WORD_TOP_LAYER;
   card.append(topLayer);
 
   const inputWord = document.createElement(Tags.INPUT);
@@ -110,10 +120,10 @@ const renderTopLayer = (
 
   const btnCreate = document.createElement(Tags.BUTTON);
   btnCreate.className =
-    action === 'update'
+    action === TopLayoutView.UPDATE
       ? 'word-top-layer-btn-update'
       : 'word-top-layer-btn-create';
-  btnCreate.innerHTML = action === 'update' ? 'Update' : 'Create';
+  btnCreate.innerHTML = action === TopLayoutView.UPDATE ? 'Update' : 'Create';
   divBtns.append(btnCreate);
 };
 
@@ -135,20 +145,22 @@ const addWord = async () => {
     const srcImage = image.files as FileList;
     const imageFile = srcImage[0];
 
-    formData.set('word', getInputWord().value);
-    formData.set('translate', getInputTranslation().value);
-    formData.set('category', selectTitle().value);
-    formData.set('sound', soundFile);
-    formData.set('image', imageFile);
+    formData.set(FormDataNames.WORD, getInputWord().value);
+    formData.set(FormDataNames.TRANSLATE, getInputTranslation().value);
+    formData.set(FormDataNames.CATEGORY, selectTitle().value);
+    formData.set(FormDataNames.SOUND, soundFile);
+    formData.set(FormDataNames.IMAGE, imageFile);
 
     const response = await createWord(formData, getInputWord().value);
-    if (response === 'duplicate') {
-      getInputWord().value = 'duplicate';
-      addClassList(getInputWord(), 'duplicate');
+    if (response === DUPLICATE) {
+      getInputWord().value = DUPLICATE;
+      addClassList(getInputWord(), ElemClasses.DISABLED);
     } else {
-      removeClassList(getInputWord(), 'duplicate');
+      removeClassList(getInputWord(), ElemClasses.DISABLED);
       if (response) {
-        onNavigate(`/${store.getState().admCateg.toLowerCase()}/words`);
+        onNavigate(
+          `/${store.getState().admCateg.toLowerCase()}${RoutNames.WORDS}`,
+        );
       }
     }
   }
@@ -157,7 +169,7 @@ const addWord = async () => {
 const deleteWordByName = async (card: HTMLDivElement) => {
   const response = await deleteWord(card.id);
   if (response) {
-    onNavigate(`/${store.getState().admCateg.toLowerCase()}/words`);
+    onNavigate(`/${store.getState().admCateg.toLowerCase()}${RoutNames.WORDS}`);
   }
 };
 
@@ -179,15 +191,17 @@ const updateCategoryName = async (card: HTMLDivElement) => {
     const srcImage = image.files as FileList;
     const imageFile = srcImage[0];
 
-    formData.set('word', getInputWord().value);
-    formData.set('translate', getInputTranslation().value);
-    formData.set('category', selectTitle().value);
-    formData.set('sound', soundFile);
-    formData.set('image', imageFile);
+    formData.set(FormDataNames.WORD, getInputWord().value);
+    formData.set(FormDataNames.TRANSLATE, getInputTranslation().value);
+    formData.set(FormDataNames.CATEGORY, selectTitle().value);
+    formData.set(FormDataNames.SOUND, soundFile);
+    formData.set(FormDataNames.IMAGE, imageFile);
 
     const response = await putWordByName(formData, card.id);
     if (response) {
-      onNavigate(`/${store.getState().admCateg.toLowerCase()}/words`);
+      onNavigate(
+        `/${store.getState().admCateg.toLowerCase()}${RoutNames.WORDS}`,
+      );
     }
   }
 };
@@ -198,23 +212,25 @@ const handlerClickPageWord = (
   event: Event,
 ) => {
   const target = event.target as HTMLElement;
-  const card = target.closest('.words-card') as HTMLDivElement;
-  if (checkClass(target, 'words-play-sound')) {
-    const wordsSound = target.closest('.words-sound') as HTMLDivElement;
+  const card = target.closest(`.${ElemClasses.WORDS_CARD}`) as HTMLDivElement;
+  if (checkClass(target, ElemClasses.WORDS_PLAY_SOUND)) {
+    const wordsSound = target.closest(
+      `.${ElemClasses.WORDS_SOUND}`,
+    ) as HTMLDivElement;
     const fileName = wordsSound.innerText.split(': ')[1];
     sound(fileName, IndexSounds.FIRST);
-  } else if (checkClass(target, 'words-btn-change')) {
-    renderTopLayer(card, 'update', words);
-  } else if (checkClass(target, 'word-top-layer-btn-cancel')) {
+  } else if (checkClass(target, ElemClasses.WORDS_BTN_CHANGE)) {
+    renderTopLayer(card, TopLayoutView.UPDATE, words);
+  } else if (checkClass(target, ElemClasses.WORD_TOP_LAYER_BTN_CANCEL)) {
     const topLayer = card.lastElementChild as HTMLElement;
     topLayer.remove();
-  } else if (checkClass(target, 'words-card-new')) {
-    renderTopLayer(card, 'create', words);
-  } else if (checkClass(target, 'word-top-layer-btn-create')) {
+  } else if (checkClass(target, ElemClasses.WORDS_CARD_NEW)) {
+    renderTopLayer(card, TopLayoutView.CREATE, words);
+  } else if (checkClass(target, ElemClasses.WORD_TOP_LAYER_BTN_CREATE)) {
     addWord();
-  } else if (checkClass(target, 'words-bnt-remove')) {
+  } else if (checkClass(target, ElemClasses.WORDS_BTN_REMOVE)) {
     deleteWordByName(card);
-  } else if (checkClass(target, 'word-top-layer-btn-update')) {
+  } else if (checkClass(target, ElemClasses.WORD_TOP_LAYER_BTN_UPDATE)) {
     updateCategoryName(card);
   }
 };

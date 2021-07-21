@@ -15,3 +15,9 @@ export const inputFile = (): HTMLInputElement =>
 
 export const getNewCardCateg = (): HTMLDivElement =>
   document.querySelector('.categ-card-new') as HTMLDivElement;
+
+export const getCategCardsAll = (): NodeListOf<Element> =>
+  document.querySelectorAll('.categ-card') as NodeListOf<Element>;
+
+export const getMainCateg = (): HTMLElement =>
+  document.querySelector('.categ-main') as HTMLElement;

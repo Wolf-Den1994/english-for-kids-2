@@ -14,3 +14,9 @@ export const getInputSound = (): HTMLInputElement =>
 
 export const getInputImage = (): HTMLInputElement =>
   document.querySelector('.word-top-layer-image-input') as HTMLInputElement;
+
+export const getWordsCardsAll = (): NodeListOf<Element> =>
+  document.querySelectorAll('.words-card') as NodeListOf<Element>;
+
+export const getMainWords = (): HTMLElement =>
+  document.querySelector('.words-main') as HTMLElement;

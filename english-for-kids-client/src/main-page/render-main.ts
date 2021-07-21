@@ -20,7 +20,7 @@ import { removeClassList } from '../utils/remove-class';
 export const hiddenStatistic = (): void => {
   const links = document.querySelectorAll('.menu-link');
   const link = links[links.length - 2];
-  addClassList(link, 'disabled');
+  addClassList(link, ElemClasses.DISABLED);
 };
 
 export const renderMain = async (): Promise<void> => {
