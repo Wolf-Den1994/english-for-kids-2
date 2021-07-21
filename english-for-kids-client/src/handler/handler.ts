@@ -109,7 +109,9 @@ export const selectionHandler = async (event: Event): Promise<void> => {
   const elem = event.target as HTMLElement;
   const card = elem.closest(`.${ElemClasses.MAIN_CARD}`) as HTMLDivElement;
   const front = elem.closest(`.${ElemClasses.FRONT}`) as HTMLDivElement;
-  const titleTh = elem.closest('.title-th') as HTMLTableHeaderCellElement;
+  const titleTh = elem.closest(
+    `.${ElemClasses.TITLE_TH}`,
+  ) as HTMLTableHeaderCellElement;
   if (store.getState().mode === StateApp.TRAIN) {
     workWithCards(elem, card, front);
     if (store.getState().page === objNumberPage.statistic) {

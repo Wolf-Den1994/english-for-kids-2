@@ -51,6 +51,7 @@ export enum ElemClasses {
   CATEG_TOP_LAYER_BTN_CREATE = 'categ-top-layer-btn-create',
   CATEG_LINK_ACTIVE = 'categ-link-active',
   OBSERV = 'observ',
+  TITLE_TH = 'title-th',
 }
 
 export enum ElemId {

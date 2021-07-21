@@ -1,13 +1,13 @@
 import { onNavigate } from '../routing/routes';
 import { LOCAL_STORAGE_USER_ADMIN } from '../utils/consts';
+import { RoutNames } from '../utils/enums';
 import { ICategoriesMongo, IUserData, IWordsMongo } from '../utils/interfaces';
 
-// const baseURL = 'https://majestic-rocky-mountain-22221.herokuapp.com';
-const baseURL = 'http://localhost';
+const baseURL = 'https://majestic-rocky-mountain-22221.herokuapp.com';
 
 async function checkAuthReponse(response: Response) {
   if (response.status === 401) {
-    onNavigate('/');
+    onNavigate(RoutNames.MAIN);
   }
 }
 
