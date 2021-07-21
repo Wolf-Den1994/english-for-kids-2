@@ -20,7 +20,9 @@ export async function getCategory(): Promise<ICategoriesMongo[]> {
   return category;
 }
 
-export async function getCategoryByName(name: string): Promise<any> {
+export async function getCategoryByName(
+  name: string,
+): Promise<ICategoriesMongo> {
   const response = await fetch(`${baseURL}/api/category/${name}`, {
     method: 'GET',
     headers: { Accept: 'application/json' },
@@ -32,7 +34,7 @@ export async function getCategoryByName(name: string): Promise<any> {
 export async function createCategory(
   formData: FormData,
   name: string,
-): Promise<any> {
+): Promise<ICategoriesMongo | string> {
   const response = await fetch(`${baseURL}/api/category/${name}`, {
     method: 'POST',
     headers: {
@@ -67,7 +69,9 @@ export async function putCategoryByName(
   return null;
 }
 
-export async function deleteCategory(name: string): Promise<any> {
+export async function deleteCategory(
+  name: string,
+): Promise<ICategoriesMongo | null> {
   const response = await fetch(`${baseURL}/api/category/${name}`, {
     method: 'DELETE',
     headers: {
@@ -106,7 +110,7 @@ export async function getWordsByCategory(
 export async function createWord(
   formData: FormData,
   name: string,
-): Promise<any> {
+): Promise<IWordsMongo | string> {
   const response = await fetch(`${baseURL}/api/word/${name}`, {
     method: 'POST',
     headers: {
@@ -122,7 +126,7 @@ export async function createWord(
   return word;
 }
 
-export async function deleteWord(name: string): Promise<any> {
+export async function deleteWord(name: string): Promise<IWordsMongo | null> {
   const response = await fetch(`${baseURL}/api/word/${name}`, {
     method: 'DELETE',
     headers: {
