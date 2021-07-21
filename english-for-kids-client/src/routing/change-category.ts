@@ -1,18 +1,12 @@
 import { getWordsByCategory, getCategory } from '../api/api';
 import { handlingClicks } from '../page-works/handling-clicks-categ';
 import { head } from '../shareit/head';
-import { addClassList } from '../utils/add-class';
-import { checkClass } from '../utils/check-class';
-import {
-  DELAY_LOAD_HIDDEN,
-  DELAY_LOAD_SHOW,
-  NUMBER_CIRCLE,
-} from '../utils/consts';
 import { ElemClasses, Tags } from '../utils/enums';
-import { getLoader } from '../utils/get-elems';
-import { getCategCardsAll, getMainCateg } from '../utils/get-elems-categ';
+import { getMainCateg } from '../utils/get-elems-categ';
 import { ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
+import { loader } from './loader';
+import { observerPage } from './observer';
 
 export const changeCategory = `${head('categ')}`;
 const heightHeader = 71;
@@ -30,7 +24,7 @@ const renderNewCard = (main: HTMLElement): void => {
   newCard.append(name);
 };
 
-const rend = (
+const renderCategory = (
   begin: number,
   end: number,
   categories: ICategoriesMongo[],
@@ -92,72 +86,20 @@ export const renderCategPage = async (): Promise<void> => {
   }
   const arrWordsInCategory = await Promise.all(arrWordsOnCategory);
 
-  const heightClient = document.documentElement.clientHeight;
-  let start =
-    Math.ceil((heightClient - heightHeader) / heightCard) +
-    correctionCoefficient;
-  let mx = start;
+  const plug = () => {};
 
-  let counterObserver = 0;
-
-  rend(0, start, categories, main, arrWordsInCategory);
-
-  let cards = [...getCategCardsAll()] as HTMLElement[];
-
-  const observer = new IntersectionObserver(
-    (entries, observ) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          counterObserver++;
-          removeClassList(entry.target, ElemClasses.OBSERV);
-          if (counterObserver + 1 === start) {
-            if (mx < categories.length) {
-              addClassList(document.body, ElemClasses.HIDDEN);
-              removeClassList(getLoader(), ElemClasses.HIDDEN);
-
-              setTimeout(() => {
-                addClassList(getLoader(), ElemClasses.HIDDEN);
-                if (mx + mx <= categories.length) {
-                  mx += start;
-                } else {
-                  mx = categories.length;
-                }
-                rend(start, mx, categories, main, arrWordsInCategory);
-                start += start;
-              }, DELAY_LOAD_SHOW);
-            }
-            setTimeout(() => {
-              removeClassList(document.body, ElemClasses.HIDDEN);
-              cards = [...getCategCardsAll()] as HTMLElement[];
-              cards.forEach((card) => {
-                if (checkClass(card, ElemClasses.OBSERV)) {
-                  observer.observe(card);
-                }
-              });
-            }, DELAY_LOAD_HIDDEN);
-          }
-          observ.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 1 },
+  observerPage(
+    'categories',
+    heightHeader,
+    heightCard,
+    correctionCoefficient,
+    categories,
+    main,
+    plug,
+    renderCategory,
+    arrWordsInCategory,
   );
 
-  cards.forEach((card) => {
-    if (checkClass(card, ElemClasses.OBSERV)) {
-      observer.observe(card);
-    }
-  });
-
-  const loaderScroll = document.createElement(Tags.DIV);
-  loaderScroll.className = 'loader hidden';
-  main.append(loaderScroll);
-
-  for (let i = 0; i < NUMBER_CIRCLE; i++) {
-    const circle = document.createElement(Tags.DIV);
-    circle.className = 'circle';
-    loaderScroll.append(circle);
-  }
-
+  loader(main);
   handlingClicks(main, categories);
 };

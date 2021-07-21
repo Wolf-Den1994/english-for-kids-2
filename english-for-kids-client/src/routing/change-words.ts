@@ -3,29 +3,19 @@ import { handlingClicksWordPage } from '../page-works/handling-click-word';
 import { head } from '../shareit/head';
 import { changeAdminCategory } from '../store/actions';
 import { store } from '../store/store';
-import { addClassList } from '../utils/add-class';
-import { checkClass } from '../utils/check-class';
-import {
-  DELAY_LOAD_HIDDEN,
-  DELAY_LOAD_SHOW,
-  NUMBER_CIRCLE,
-} from '../utils/consts';
 import { ElemClasses, Events, RoutNames, Tags } from '../utils/enums';
-import { getLoader } from '../utils/get-elems';
-import {
-  getMainWords,
-  getWordsCardsAll,
-  selectTitle,
-} from '../utils/get-elems-words';
+import { getMainWords, selectTitle } from '../utils/get-elems-words';
 import { ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
+import { loader } from './loader';
+import { observerPage } from './observer';
 import { onNavigate } from './routes';
 
 const heightHeader = 151;
 const heightCard = 400;
 const correctionCoefficient = 4;
 
-const renderNewCard = (wrapper: HTMLDivElement): void => {
+const renderNewCard = (wrapper: HTMLDivElement | HTMLElement): void => {
   const card = document.createElement(Tags.DIV);
   card.className = 'words-card words-card-new';
   wrapper.append(card);
@@ -36,11 +26,11 @@ const renderNewCard = (wrapper: HTMLDivElement): void => {
   card.append(newWord);
 };
 
-const rend = (
+const renderWords = (
   begin: number,
   end: number,
   words: IWordsMongo[],
-  wrapper: HTMLDivElement,
+  wrapper: HTMLDivElement | HTMLElement,
 ): void => {
   for (let i = begin; i < end; i++) {
     if (typeof words[i] === 'object') {
@@ -110,75 +100,21 @@ const pointThisWords = (
 ): void => {
   wrapper.innerHTML = '';
 
-  const heightClient = document.documentElement.clientHeight;
-  let start =
-    Math.ceil((heightClient - heightHeader) / heightCard) +
-    correctionCoefficient;
-  let mx = start;
-
-  let counterObserver = 0;
-
-  rend(0, start, words, wrapper);
-
-  let cards = [...getWordsCardsAll()] as HTMLElement[];
-
-  const observer = new IntersectionObserver(
-    (entries, observ) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          counterObserver++;
-          if (counterObserver + 1 === start) {
-            if (mx < words.length) {
-              addClassList(document.body, ElemClasses.HIDDEN);
-
-              getLoader().classList.remove(ElemClasses.HIDDEN);
-              setTimeout(() => {
-                getLoader().classList.add(ElemClasses.HIDDEN);
-                if (mx + mx <= words.length) {
-                  mx += start;
-                } else {
-                  mx = words.length;
-                }
-                rend(start, mx, words, wrapper);
-                start += start;
-              }, DELAY_LOAD_SHOW);
-            }
-            setTimeout(() => {
-              removeClassList(document.body, ElemClasses.HIDDEN);
-              cards = [...getWordsCardsAll()] as HTMLElement[];
-              cards.forEach((card) => {
-                if (checkClass(card, ElemClasses.OBSERV)) {
-                  observer.observe(card);
-                }
-              });
-            }, DELAY_LOAD_HIDDEN);
-          }
-          observ.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 1 },
+  observerPage(
+    'words',
+    heightHeader,
+    heightCard,
+    correctionCoefficient,
+    words,
+    wrapper,
+    renderWords,
   );
-
-  cards.forEach((card) => {
-    if (checkClass(card, ElemClasses.OBSERV)) {
-      observer.observe(card);
-    }
-  });
 
   const audio1 = document.createElement(Tags.AUDIO);
   audio1.className = 'audio1';
   wrapper.append(audio1);
 
-  const loaderScroll = document.createElement(Tags.DIV);
-  loaderScroll.className = 'loader hidden';
-  wrapper.append(loaderScroll);
-
-  for (let i = 0; i < NUMBER_CIRCLE; i++) {
-    const circle = document.createElement(Tags.DIV);
-    circle.className = 'circle';
-    loaderScroll.append(circle);
-  }
+  loader(wrapper);
 };
 
 const selectCategory = async (
