@@ -1,10 +1,11 @@
+import { getWordsByCategory } from '../api/api';
 import cards from '../cards';
 import { objGame } from '../control/obj-game';
 import { objNumberPage } from '../control/obj-page';
 import { dispatchInfo, fullCards } from '../control/obj-statistic';
 import { objApp } from '../control/objs';
 import { gameProcess, startGame } from '../play/game';
-import { playSoundServer, sound } from '../play/sound';
+import { playingArrOfSounds, playSoundServer, sound } from '../play/sound';
 import { resetStatistic } from '../statistic/reset';
 import { sortStatistic } from '../statistic/sort';
 import { changePage } from '../store/actions';
@@ -103,7 +104,7 @@ const isGameProcess = (elems: IHTMLElems, elem: HTMLElement): boolean =>
   !checkClass(elems.btnStartGame, ElemClasses.BTN_START_GAME) &&
   !checkClass(elem, ElemClasses.GREAT);
 
-export const selectionHandler = (event: Event): void => {
+export const selectionHandler = async (event: Event): Promise<void> => {
   const elems = getArrsElem();
   const elem = event.target as HTMLElement;
   const card = elem.closest(`.${ElemClasses.MAIN_CARD}`) as HTMLDivElement;
@@ -127,7 +128,9 @@ export const selectionHandler = (event: Event): void => {
     startGame(elem);
   } else if (checkClass(elem, ElemClasses.REPEAT)) {
     if (objGame.arrAudios.length > 0) {
-      sound(objGame.arrAudios[0], IndexSounds.FIRST);
+      const categoryName = cards[CATEGORY][store.getState().page - 1];
+      const words = await getWordsByCategory(categoryName);
+      playingArrOfSounds(words);
     }
   } else if (isGameProcess(elems, elem)) {
     gameProcess(elem);

@@ -11,7 +11,7 @@ import { ElemClasses, IndexSounds, Tags } from '../utils/enums';
 import { getSoundPath } from '../utils/get-sound-path';
 import { getStringWord } from '../utils/get-word';
 import { IWordsMongo } from '../utils/interfaces';
-import { sound } from './sound';
+import { playingArrOfSounds, sound } from './sound';
 
 const IN_INTEREST = 100;
 const DELAY_PLAY_SOUND = 1000;
@@ -29,14 +29,6 @@ const generateRandom = (words: string[]): string[] => {
     arrAudios.push(words[i]);
   }
   return arrAudios.sort(() => Math.random() - 0.5);
-};
-
-const playingArrOfSounds = (words: IWordsMongo[]) => {
-  for (let i = 0; i < words.length; i++) {
-    if (words[i].word === objGame.arrAudios[0]) {
-      sound(words[i].audioSrc, IndexSounds.FIRST);
-    }
-  }
 };
 
 export const startGame = async (elem: HTMLElement): Promise<void> => {

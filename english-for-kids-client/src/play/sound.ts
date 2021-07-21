@@ -1,5 +1,6 @@
+import { objGame } from '../control/obj-game';
 import { IndexSounds } from '../utils/enums';
-import { ICards } from '../utils/interfaces';
+import { ICards, IWordsMongo } from '../utils/interfaces';
 import { TypeIndexsSound } from '../utils/types';
 
 export const tone = (audio: HTMLAudioElement, link: string): void => {
@@ -30,4 +31,12 @@ export const playSound = (page: ICards[], word: string): void => {
 
 export const playSoundServer = (link: string): void => {
   sound(link, IndexSounds.FIRST);
+};
+
+export const playingArrOfSounds = (words: IWordsMongo[]): void => {
+  for (let i = 0; i < words.length; i++) {
+    if (words[i].word === objGame.arrAudios[0]) {
+      sound(words[i].audioSrc, IndexSounds.FIRST);
+    }
+  }
 };
