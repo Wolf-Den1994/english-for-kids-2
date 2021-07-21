@@ -155,3 +155,8 @@ export enum FormDataNames {
   IMAGE = 'image',
   NAME = 'name',
 }
+
+export enum LayoutPages {
+  WORDS = 'words',
+  CATEGORIES = 'categories',
+}

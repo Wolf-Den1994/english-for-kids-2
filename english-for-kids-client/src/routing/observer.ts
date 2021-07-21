@@ -1,7 +1,7 @@
 import { addClassList } from '../utils/add-class';
 import { checkClass } from '../utils/check-class';
 import { DELAY_LOAD_HIDDEN, DELAY_LOAD_SHOW } from '../utils/consts';
-import { ElemClasses } from '../utils/enums';
+import { ElemClasses, LayoutPages } from '../utils/enums';
 import { getLoader } from '../utils/get-elems';
 import { getCategCardsAll } from '../utils/get-elems-categ';
 import { getWordsCardsAll } from '../utils/get-elems-words';
@@ -39,7 +39,7 @@ export const observerPage = (
   let counterObserver = 0;
 
   let cards;
-  if (page === 'words') {
+  if (page === LayoutPages.WORDS) {
     render(0, start, arrMongo as IWordsMongo[], div);
     cards = [...getWordsCardsAll()] as HTMLElement[];
   } else if (arrWordsInCategory && render2) {
@@ -66,7 +66,7 @@ export const observerPage = (
                   max = arrMongo.length;
                 }
 
-                if (page === 'words') {
+                if (page === LayoutPages.WORDS) {
                   render(start, max, arrMongo as IWordsMongo[], div);
                 } else if (render2 && arrWordsInCategory) {
                   render2(
@@ -82,7 +82,7 @@ export const observerPage = (
             }
             setTimeout(() => {
               removeClassList(document.body, ElemClasses.HIDDEN);
-              if (page === 'words') {
+              if (page === LayoutPages.WORDS) {
                 cards = [...getWordsCardsAll()] as HTMLElement[];
               } else {
                 cards = [...getCategCardsAll()] as HTMLElement[];

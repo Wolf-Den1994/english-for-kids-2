@@ -1,7 +1,7 @@
 import { getWordsByCategory, getCategory } from '../api/api';
 import { handlingClicks } from '../page-works/handling-clicks-categ';
 import { head } from '../shareit/head';
-import { ElemClasses, Tags } from '../utils/enums';
+import { ElemClasses, LayoutPages, Tags } from '../utils/enums';
 import { getMainCateg } from '../utils/get-elems-categ';
 import { ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
@@ -89,7 +89,7 @@ export const renderCategPage = async (): Promise<void> => {
   const plug = () => {};
 
   observerPage(
-    'categories',
+    LayoutPages.CATEGORIES,
     heightHeader,
     heightCard,
     correctionCoefficient,

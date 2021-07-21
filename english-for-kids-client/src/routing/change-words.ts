@@ -3,7 +3,13 @@ import { handlingClicksWordPage } from '../page-works/handling-click-word';
 import { head } from '../shareit/head';
 import { changeAdminCategory } from '../store/actions';
 import { store } from '../store/store';
-import { ElemClasses, Events, RoutNames, Tags } from '../utils/enums';
+import {
+  ElemClasses,
+  Events,
+  LayoutPages,
+  RoutNames,
+  Tags,
+} from '../utils/enums';
 import { getMainWords, selectTitle } from '../utils/get-elems-words';
 import { ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
@@ -101,7 +107,7 @@ const pointThisWords = (
   wrapper.innerHTML = '';
 
   observerPage(
-    'words',
+    LayoutPages.WORDS,
     heightHeader,
     heightCard,
     correctionCoefficient,
@@ -132,7 +138,7 @@ const selectCategory = async (
   pointThisWords(newWords, wrapper);
 };
 
-export const changeWords = `${head('words')}`;
+export const changeWords = `${head(LayoutPages.WORDS)}`;
 
 export const renderWordsPage = async (): Promise<void> => {
   removeClassList(document.body, ElemClasses.HIDDEN_MODAL);
