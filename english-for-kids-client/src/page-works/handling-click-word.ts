@@ -131,7 +131,7 @@ const renderTopLayer = (
 const findWord = (cardHtml: HTMLDivElement) =>
   allWords.find((word) => word.word === cardHtml.id);
 
-const filesExist = () =>
+const elemsExist = () =>
   getInputWord() &&
   getInputTranslation() &&
   getInputSound() &&
@@ -139,7 +139,7 @@ const filesExist = () =>
   selectTitle();
 
 const addWord = async (): Promise<void> => {
-  if (filesExist()) {
+  if (elemsExist()) {
     const formData = new FormData();
 
     const soundElem = getInputSound();
@@ -184,7 +184,7 @@ const deleteWordById = async (card: HTMLDivElement): Promise<void> => {
 };
 
 const updateWordById = async (card: HTMLDivElement): Promise<void> => {
-  if (filesExist()) {
+  if (elemsExist()) {
     const formData = new FormData();
 
     const soundElem = getInputSound();

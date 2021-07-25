@@ -20,7 +20,7 @@ export const handlerMenu = async (event: Event): Promise<void> => {
   if (checkClass(target, ElemClasses.MENU_LINK)) {
     const index = list.indexOf(target.innerHTML);
     changeActiveLink(target);
-    if (index === 0) {
+    if (index === NumberPage.MAIN) {
       store.dispatch(changePage(NumberPage.MAIN));
       renderCategory();
     } else if (index <= list.length - 3) {
