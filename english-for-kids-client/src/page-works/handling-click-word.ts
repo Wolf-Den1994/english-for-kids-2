@@ -131,14 +131,15 @@ const renderTopLayer = (
 const findWord = (cardHtml: HTMLDivElement) =>
   allWords.find((word) => word.word === cardHtml.id);
 
+const filesExist = () =>
+  getInputWord() &&
+  getInputTranslation() &&
+  getInputSound() &&
+  getInputImage() &&
+  selectTitle();
+
 const addWord = async (): Promise<void> => {
-  if (
-    getInputWord() &&
-    getInputTranslation() &&
-    getInputSound() &&
-    getInputImage() &&
-    selectTitle()
-  ) {
+  if (filesExist()) {
     const formData = new FormData();
 
     const soundElem = getInputSound();
@@ -171,23 +172,19 @@ const addWord = async (): Promise<void> => {
 };
 
 const deleteWordById = async (card: HTMLDivElement): Promise<void> => {
-  const word = findWord(card)
+  const word = findWord(card);
   if (word) {
     const response = await deleteWord(word._id);
     if (response) {
-      onNavigate(`/${store.getState().admCateg.toLowerCase()}${RoutNames.WORDS}`);
+      onNavigate(
+        `/${store.getState().admCateg.toLowerCase()}${RoutNames.WORDS}`,
+      );
     }
   }
 };
 
 const updateWordById = async (card: HTMLDivElement): Promise<void> => {
-  if (
-    getInputWord() &&
-    getInputTranslation() &&
-    getInputSound() &&
-    getInputImage() &&
-    selectTitle()
-  ) {
+  if (filesExist()) {
     const formData = new FormData();
 
     const soundElem = getInputSound();
@@ -204,7 +201,7 @@ const updateWordById = async (card: HTMLDivElement): Promise<void> => {
     formData.set(FormDataNames.SOUND, soundFile);
     formData.set(FormDataNames.IMAGE, imageFile);
 
-    const word = findWord(card)
+    const word = findWord(card);
 
     if (word) {
       const response = await putWordById(formData, word._id);

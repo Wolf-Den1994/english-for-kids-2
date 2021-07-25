@@ -1,13 +1,13 @@
 import { onNavigate } from '../routing/routes';
-import { LOCAL_STORAGE_USER_ADMIN } from '../utils/consts';
-import { RoutNames } from '../utils/enums';
+import { DUPLICATE, LOCAL_STORAGE_USER_ADMIN } from '../utils/consts';
+import { ResponseStatus, RoutNames } from '../utils/enums';
 import { ICategoriesMongo, IUserData, IWordsMongo } from '../utils/interfaces';
 
 // const baseURL = 'https://majestic-rocky-mountain-22221.herokuapp.com';
 const baseURL = 'http://localhost';
 
 async function checkAuthReponse(response: Response) {
-  if (response.status === 401) {
+  if (response.status === ResponseStatus.UNAUTHORIZED) {
     onNavigate(RoutNames.MAIN);
   }
 }
@@ -44,8 +44,8 @@ export async function createCategory(
     body: formData,
   });
   checkAuthReponse(response);
-  if (response.status === 400) {
-    return 'duplicate';
+  if (response.status === ResponseStatus.BAD_REQUEST) {
+    return DUPLICATE;
   }
   const category = await response.json();
   return category;
@@ -120,8 +120,8 @@ export async function createWord(
     body: formData,
   });
   checkAuthReponse(response);
-  if (response.status === 400) {
-    return 'duplicate';
+  if (response.status === ResponseStatus.BAD_REQUEST) {
+    return DUPLICATE;
   }
   const word = await response.json();
   return word;
