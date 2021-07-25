@@ -3,8 +3,7 @@ import { DUPLICATE, LOCAL_STORAGE_USER_ADMIN } from '../utils/consts';
 import { ResponseStatus, RoutNames } from '../utils/enums';
 import { ICategoriesMongo, IUserData, IWordsMongo } from '../utils/interfaces';
 
-// const baseURL = 'https://majestic-rocky-mountain-22221.herokuapp.com';
-const baseURL = 'http://localhost';
+const baseURL = 'https://majestic-rocky-mountain-22221.herokuapp.com';
 
 async function checkAuthReponse(response: Response) {
   if (response.status === ResponseStatus.UNAUTHORIZED) {
