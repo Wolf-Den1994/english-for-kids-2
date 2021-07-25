@@ -134,10 +134,9 @@ const selectCategory = async (
 
   store.dispatch(changeAdminCategory(target.value));
   onNavigate(`/${store.getState().admCateg.toLowerCase()}${RoutNames.WORDS}`);
-  const newWords = await getWordsByCategory(store.getState().admCateg);
-  updateWordArray(newWords)
+  updateWordArray(words)
 
-  pointThisWords(newWords, wrapper);
+  pointThisWords(words, wrapper);
 };
 
 export const changeWords = `${head(LayoutPages.WORDS)}`;
