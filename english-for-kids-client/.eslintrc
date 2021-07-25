@@ -21,6 +21,7 @@
     "no-plusplus": "off",
     "@typescript-eslint/no-var-requires": 0,
     "no-console": "warn",
+    "no-underscore-dangle": "off",
     "import/no-cycle": "off",
     "max-len": ["warn", { "code": 80 }],
     "indent": ["warn", 2, {

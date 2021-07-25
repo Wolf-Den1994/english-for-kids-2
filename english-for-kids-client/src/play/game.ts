@@ -11,6 +11,7 @@ import { ElemClasses, IndexSounds, Tags } from '../utils/enums';
 import { getSoundPath } from '../utils/get-sound-path';
 import { getStringWord } from '../utils/get-word';
 import { IWordsMongo } from '../utils/interfaces';
+import { updateWordArray } from '../utils/update-card-arr';
 import { playingArrOfSounds, sound } from './sound';
 
 const IN_INTEREST = 100;
@@ -34,6 +35,7 @@ const generateRandom = (words: string[]): string[] => {
 export const startGame = async (elem: HTMLElement): Promise<void> => {
   const categoryName = cards[CATEGORY][store.getState().page - 1];
   const words = await getWordsByCategory(categoryName);
+  updateWordArray(words)
   const arrWords: string[] = [];
   for (let i = 0; i < words.length; i++) {
     arrWords.push(words[i].word);
@@ -52,6 +54,7 @@ const addAnswers = (item: IWordsMongo): void => {
 export const gameProcess = async (elem: HTMLElement): Promise<void> => {
   const categoryName = cards[CATEGORY][store.getState().page - 1];
   const words = await getWordsByCategory(categoryName);
+  updateWordArray(words)
   const image = elem as HTMLImageElement;
   if (objGame.arrAudios.length) {
     const wordImage = getStringWord(image.alt);

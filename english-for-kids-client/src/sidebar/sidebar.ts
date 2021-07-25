@@ -1,6 +1,7 @@
 import { getCategory } from '../api/api';
 import { objNumberPage } from '../control/obj-page';
 import { ElemClasses, Tags } from '../utils/enums';
+import { updateCardArray } from '../utils/update-card-arr';
 
 let isFirstLink = true;
 
@@ -14,6 +15,7 @@ export const links: HTMLAnchorElement[] = [];
 
 export const renderSidebar = async (): Promise<void> => {
   const categories = await getCategory();
+  updateCardArray(categories);
   list.length = 0;
 
   for (let i = 0; i < categories.length; i++) {

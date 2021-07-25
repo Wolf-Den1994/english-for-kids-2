@@ -19,6 +19,8 @@
     "no-plusplus": "off",
     "no-console": "warn",
     "consistent-return": "off",
+    "no-underscore-dangle": "off",
+    "@typescript-eslint/naming-convention": "off",
     "max-len": ["warn", { "code": 120 }],
     "indent": ["warn", 2, {
       "SwitchCase": 1

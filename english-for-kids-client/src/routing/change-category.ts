@@ -5,6 +5,7 @@ import { ElemClasses, LayoutPages, Tags } from '../utils/enums';
 import { getMainCateg } from '../utils/get-elems-categ';
 import { ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
+import { updateCardArray } from '../utils/update-card-arr';
 import { loader } from './loader';
 import { observerPage } from './observer';
 
@@ -78,6 +79,7 @@ export const renderCategPage = async (): Promise<void> => {
   removeClassList(document.body, ElemClasses.HIDDEN_MODAL);
 
   const categories = await getCategory();
+  updateCardArray(categories);
   const main = getMainCateg();
   const arrWordsOnCategory = [];
 

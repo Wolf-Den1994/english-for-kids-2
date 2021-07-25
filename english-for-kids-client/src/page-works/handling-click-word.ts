@@ -1,5 +1,6 @@
-import { createWord, deleteWord, putWordByName } from '../api/api';
+import { createWord, deleteWord, putWordById } from '../api/api';
 import { sound } from '../play/sound';
+import { allWords } from '../routing/change-words';
 import { onNavigate } from '../routing/routes';
 import { store } from '../store/store';
 import { addClassList } from '../utils/add-class';
@@ -127,6 +128,9 @@ const renderTopLayer = (
   divBtns.append(btnCreate);
 };
 
+const findWord = (cardHtml: HTMLDivElement) =>
+  allWords.find((word) => word.word === cardHtml.id);
+
 const addWord = async (): Promise<void> => {
   if (
     getInputWord() &&
@@ -166,14 +170,17 @@ const addWord = async (): Promise<void> => {
   }
 };
 
-const deleteWordByName = async (card: HTMLDivElement): Promise<void> => {
-  const response = await deleteWord(card.id);
-  if (response) {
-    onNavigate(`/${store.getState().admCateg.toLowerCase()}${RoutNames.WORDS}`);
+const deleteWordById = async (card: HTMLDivElement): Promise<void> => {
+  const word = findWord(card)
+  if (word) {
+    const response = await deleteWord(word._id);
+    if (response) {
+      onNavigate(`/${store.getState().admCateg.toLowerCase()}${RoutNames.WORDS}`);
+    }
   }
 };
 
-const updateCategoryName = async (card: HTMLDivElement): Promise<void> => {
+const updateWordById = async (card: HTMLDivElement): Promise<void> => {
   if (
     getInputWord() &&
     getInputTranslation() &&
@@ -197,11 +204,15 @@ const updateCategoryName = async (card: HTMLDivElement): Promise<void> => {
     formData.set(FormDataNames.SOUND, soundFile);
     formData.set(FormDataNames.IMAGE, imageFile);
 
-    const response = await putWordByName(formData, card.id);
-    if (response) {
-      onNavigate(
-        `/${store.getState().admCateg.toLowerCase()}${RoutNames.WORDS}`,
-      );
+    const word = findWord(card)
+
+    if (word) {
+      const response = await putWordById(formData, word._id);
+      if (response) {
+        onNavigate(
+          `/${store.getState().admCateg.toLowerCase()}${RoutNames.WORDS}`,
+        );
+      }
     }
   }
 };
@@ -229,9 +240,9 @@ const handlerClickPageWord = (
   } else if (checkClass(target, ElemClasses.WORD_TOP_LAYER_BTN_CREATE)) {
     addWord();
   } else if (checkClass(target, ElemClasses.WORDS_BTN_REMOVE)) {
-    deleteWordByName(card);
+    deleteWordById(card);
   } else if (checkClass(target, ElemClasses.WORD_TOP_LAYER_BTN_UPDATE)) {
-    updateCategoryName(card);
+    updateWordById(card);
   }
 };
 

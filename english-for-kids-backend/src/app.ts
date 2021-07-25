@@ -89,10 +89,10 @@ app.get('/api/category', async (req, res) => {
   }
 });
 
-app.get('/api/category/:name', async (req, res) => {
+app.get('/api/category/:id', async (req, res) => {
   try {
-    const categoryName = req.params.name;
-    const category = await Category.find({ categoryName });
+    const _id = req.params.id;
+    const category = await Category.find({ _id });
 
     // eslint-disable-next-line no-console
     console.log('category get by name');
@@ -103,10 +103,10 @@ app.get('/api/category/:name', async (req, res) => {
   }
 });
 
-app.delete('/api/category/:name', auth, async (req, res) => {
+app.delete('/api/category/:id', auth, async (req, res) => {
   try {
-    const categoryName = req.params.name;
-    const category = await Category.find({ categoryName });
+    const _id = req.params.id;
+    const category = await Category.find({ _id });
     const categ = category[0];
 
     await cloudinaryV2.uploader.destroy(categ.image);
@@ -122,12 +122,12 @@ app.delete('/api/category/:name', auth, async (req, res) => {
 });
 
 app.put(
-  '/api/category/:namecat',
+  '/api/category/:id',
   [auth, upload.single('image')],
   async (req: Request, res: Response) => {
     try {
-      const categoryName = req.params.namecat;
-      const category = await Category.find({ categoryName });
+      const _id = req.params.id;
+      const category = await Category.find({ _id });
       const categ: ICategoriesMongo = category[0];
       await cloudinaryV2.uploader.destroy(categ.categoryName);
 
@@ -272,10 +272,10 @@ app.post(
   },
 );
 
-app.delete('/api/word/:name', auth, async (req, res) => {
+app.delete('/api/word/:id', auth, async (req, res) => {
   try {
-    const word = req.params.name;
-    const responseWord = await Card.find({ word });
+    const _id = req.params.id;
+    const responseWord = await Card.find({ _id });
     const wordSrc = responseWord[0];
     await cloudinaryV2.uploader.destroy(wordSrc.image);
     await cloudinaryV2.uploader.destroy(wordSrc.audioSrc);
@@ -291,7 +291,7 @@ app.delete('/api/word/:name', auth, async (req, res) => {
 });
 
 app.put(
-  '/api/word/:nameword',
+  '/api/word/:id',
   [
     auth,
     upload.fields([
@@ -303,14 +303,14 @@ app.put(
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const ifiles = req.files as any;
-      const word = req.params.nameword;
+      const _id = req.params.id;
       const reqCategory = req.body.category;
       const reqWord = req.body.word;
       const reqTranslate = req.body.translate;
       const reqImage = ifiles.image;
       const reqSound = ifiles.sound;
 
-      const responseWord = await Card.find({ word });
+      const responseWord = await Card.find({ _id });
       const wordSrc: IFullCars = responseWord[0];
 
       await cloudinaryV2.uploader.destroy(wordSrc.image);

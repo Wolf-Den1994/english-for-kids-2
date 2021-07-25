@@ -4,9 +4,14 @@ import { objGame } from '../control/obj-game';
 import { CATEGORY, imgCategories } from '../utils/consts';
 import { Tags } from '../utils/enums';
 import { root } from '../utils/get-elems';
+import { ICategoriesMongo } from '../utils/interfaces';
+import { updateCardArray } from '../utils/update-card-arr';
+
+export const allCards: ICategoriesMongo[] = [];
 
 export const renderCategory = async (): Promise<void> => {
   const categories = await getCategory();
+  updateCardArray(categories);
   objGame.counterErrors = 0;
   root().innerHTML = '';
 

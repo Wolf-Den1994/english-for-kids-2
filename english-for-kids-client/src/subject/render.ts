@@ -6,6 +6,7 @@ import { CATEGORY } from '../utils/consts';
 import { LayoutPage, StateApp, Tags } from '../utils/enums';
 import { root } from '../utils/get-elems';
 import { IWordsMongo } from '../utils/interfaces';
+import { updateWordArray } from '../utils/update-card-arr';
 
 export const cleanField = (): void => {
   objGame.counterErrors = 0;
@@ -107,6 +108,7 @@ export const renderSubject = async (page: number): Promise<void> => {
   const index = page - 1;
   const categoryName = cards[CATEGORY][index];
   const words = await getWordsByCategory(categoryName);
+  updateWordArray(words)
   cleanField();
 
   render(LayoutPage.SUBJECT, index, words, categoryName);

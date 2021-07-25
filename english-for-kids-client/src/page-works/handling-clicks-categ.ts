@@ -1,4 +1,5 @@
-import { createCategory, deleteCategory, putCategoryByName } from '../api/api';
+import { createCategory, deleteCategory, putCategoryById } from '../api/api';
+import { allCards } from '../category/category';
 import { onNavigate } from '../routing/routes';
 import { changeAdminCategory } from '../store/actions';
 import { store } from '../store/store';
@@ -75,6 +76,9 @@ const renderTopLayer = (card: HTMLDivElement, action: string): void => {
   divBtns.append(btnCreate);
 };
 
+const findCategory = (cardHtml: HTMLElement) =>
+  allCards.find((card) => card.categoryName === cardHtml.id);
+
 const updateCategoryName = async (card: HTMLElement): Promise<void> => {
   if (inputFile() && inputText()) {
     const formData = new FormData();
@@ -86,17 +90,24 @@ const updateCategoryName = async (card: HTMLElement): Promise<void> => {
     formData.set(FormDataNames.NAME, inputText().value);
     formData.set(FormDataNames.IMAGE, imageFile);
 
-    const response = await putCategoryByName(formData, card.id);
-    if (response) {
-      onNavigate(RoutNames.CATEGORY);
+    const category = findCategory(card);
+
+    if (category) {
+      const response = await putCategoryById(formData, category._id);
+      if (response) {
+        onNavigate(RoutNames.CATEGORY);
+      }
     }
   }
 };
 
-const deleteCategoryByName = async (card: HTMLElement): Promise<void> => {
-  const response = await deleteCategory(card.id);
-  if (response) {
-    onNavigate(RoutNames.CATEGORY);
+const deleteCategoryById = async (cardHtml: HTMLElement): Promise<void> => {
+  const category = findCategory(cardHtml);
+  if (category) {
+    const response = await deleteCategory(category._id);
+    if (response) {
+      onNavigate(RoutNames.CATEGORY);
+    }
   }
 };
 
@@ -144,7 +155,7 @@ const handlerClickPageCategory = (
     } else if (checkClass(target, ElemClasses.CATEG_TOP_LAYER_BTN_UPDATE)) {
       updateCategoryName(card);
     } else if (checkClass(target, ElemClasses.CATEG_BTN_REMOVE)) {
-      deleteCategoryByName(card);
+      deleteCategoryById(card);
     } else if (checkClass(target, ElemClasses.CATEG_CARD_NEW)) {
       renderTopLayer(card, TopLayoutView.CREATE);
     } else if (checkClass(target, ElemClasses.CATEG_TOP_LAYER_BTN_CREATE)) {

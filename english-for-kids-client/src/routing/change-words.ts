@@ -13,6 +13,7 @@ import {
 import { getMainWords, selectTitle } from '../utils/get-elems-words';
 import { ICategoriesMongo, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
+import { updateCardArray, updateWordArray } from '../utils/update-card-arr';
 import { loader } from './loader';
 import { observerPage } from './observer';
 import { onNavigate } from './routes';
@@ -134,17 +135,22 @@ const selectCategory = async (
   store.dispatch(changeAdminCategory(target.value));
   onNavigate(`/${store.getState().admCateg.toLowerCase()}${RoutNames.WORDS}`);
   const newWords = await getWordsByCategory(store.getState().admCateg);
+  updateWordArray(newWords)
 
   pointThisWords(newWords, wrapper);
 };
 
 export const changeWords = `${head(LayoutPages.WORDS)}`;
 
+export const allWords: IWordsMongo[] = [];
+
 export const renderWordsPage = async (): Promise<void> => {
   removeClassList(document.body, ElemClasses.HIDDEN_MODAL);
 
   const categories = await getCategory();
+  updateCardArray(categories);
   const words = await getWordsByCategory(store.getState().admCateg);
+  updateWordArray(words)
   const main = getMainWords();
 
   const wrapperSelect = document.createElement(Tags.DIV);

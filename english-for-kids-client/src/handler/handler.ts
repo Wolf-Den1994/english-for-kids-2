@@ -23,6 +23,7 @@ import { getArrsElem } from '../utils/get-elems';
 import { getWord } from '../utils/get-word';
 import { IHTMLElems, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
+import { updateWordArray } from '../utils/update-card-arr';
 import { changeActiveLink } from './links-active';
 
 const checkClasses = (
@@ -132,6 +133,7 @@ export const selectionHandler = async (event: Event): Promise<void> => {
     if (objGame.arrAudios.length > 0) {
       const categoryName = cards[CATEGORY][store.getState().page - 1];
       const words = await getWordsByCategory(categoryName);
+      updateWordArray(words)
       playingArrOfSounds(words);
     }
   } else if (isGameProcess(elems, elem)) {

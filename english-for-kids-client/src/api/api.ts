@@ -3,7 +3,8 @@ import { LOCAL_STORAGE_USER_ADMIN } from '../utils/consts';
 import { RoutNames } from '../utils/enums';
 import { ICategoriesMongo, IUserData, IWordsMongo } from '../utils/interfaces';
 
-const baseURL = 'https://majestic-rocky-mountain-22221.herokuapp.com';
+// const baseURL = 'https://majestic-rocky-mountain-22221.herokuapp.com';
+const baseURL = 'http://localhost';
 
 async function checkAuthReponse(response: Response) {
   if (response.status === 401) {
@@ -20,10 +21,10 @@ export async function getCategory(): Promise<ICategoriesMongo[]> {
   return category;
 }
 
-export async function getCategoryByName(
-  name: string,
+export async function getCategoryById(
+  id: string,
 ): Promise<ICategoriesMongo> {
-  const response = await fetch(`${baseURL}/api/category/${name}`, {
+  const response = await fetch(`${baseURL}/api/category/${id}`, {
     method: 'GET',
     headers: { Accept: 'application/json' },
   });
@@ -50,11 +51,11 @@ export async function createCategory(
   return category;
 }
 
-export async function putCategoryByName(
+export async function putCategoryById(
   formData: FormData,
-  name: string,
+  id: string,
 ): Promise<string | null> {
-  const response = await fetch(`${baseURL}/api/category/${name}`, {
+  const response = await fetch(`${baseURL}/api/category/${id}`, {
     method: 'PUT',
     headers: {
       Authorization: `${localStorage.getItem(LOCAL_STORAGE_USER_ADMIN)}`,
@@ -70,9 +71,9 @@ export async function putCategoryByName(
 }
 
 export async function deleteCategory(
-  name: string,
+  id: string,
 ): Promise<ICategoriesMongo | null> {
-  const response = await fetch(`${baseURL}/api/category/${name}`, {
+  const response = await fetch(`${baseURL}/api/category/${id}`, {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
@@ -126,8 +127,8 @@ export async function createWord(
   return word;
 }
 
-export async function deleteWord(name: string): Promise<IWordsMongo | null> {
-  const response = await fetch(`${baseURL}/api/word/${name}`, {
+export async function deleteWord(id: string): Promise<IWordsMongo | null> {
+  const response = await fetch(`${baseURL}/api/word/${id}`, {
     method: 'DELETE',
     headers: {
       Accept: 'application/json',
@@ -142,11 +143,11 @@ export async function deleteWord(name: string): Promise<IWordsMongo | null> {
   return null;
 }
 
-export async function putWordByName(
+export async function putWordById(
   formData: FormData,
-  name: string,
+  id: string,
 ): Promise<string | null> {
-  const response = await fetch(`${baseURL}/api/word/${name}`, {
+  const response = await fetch(`${baseURL}/api/word/${id}`, {
     method: 'PUT',
     headers: {
       Authorization: `${localStorage.getItem(LOCAL_STORAGE_USER_ADMIN)}`,

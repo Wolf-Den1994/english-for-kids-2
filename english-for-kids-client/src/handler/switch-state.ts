@@ -12,6 +12,7 @@ import { ElemClasses, StateApp } from '../utils/enums';
 import { getArrsElem } from '../utils/get-elems';
 import { IHTMLElems, IWordsMongo } from '../utils/interfaces';
 import { removeClassList } from '../utils/remove-class';
+import { updateWordArray } from '../utils/update-card-arr';
 
 const isPageCategory = (): boolean =>
   store.getState().page !== objNumberPage.main &&
@@ -61,6 +62,7 @@ export const switchState = async (event: Event): Promise<void> => {
   const target = event.target as HTMLInputElement;
   const categoryName = list[store.getState().page];
   const words = await getWordsByCategory(categoryName);
+  updateWordArray(words)
   if (target.checked) {
     store.dispatch(changeMode(StateApp.TRAIN));
     if (
