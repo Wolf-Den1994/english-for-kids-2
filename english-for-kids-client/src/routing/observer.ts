@@ -52,7 +52,7 @@ export const observerPage = (
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           removeClassList(entry.target, ElemClasses.OBSERV);
-          if (counterObserver++ === start) {
+          if (++counterObserver === start) {
             if (max < arrMongo.length) {
               addClassList(document.body, ElemClasses.HIDDEN);
               removeClassList(getLoader(), ElemClasses.HIDDEN);
