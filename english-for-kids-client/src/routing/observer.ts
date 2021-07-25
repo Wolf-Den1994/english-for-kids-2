@@ -36,7 +36,7 @@ export const observerPage = (
     correctionCoefficient;
   let max = start;
 
-  let counterObserver = 0;
+  let counterObserver = 1;
 
   let cards;
   if (page === LayoutPages.WORDS) {
@@ -51,9 +51,8 @@ export const observerPage = (
     (entries, observ) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          counterObserver++;
           removeClassList(entry.target, ElemClasses.OBSERV);
-          if (counterObserver + 1 === start) {
+          if (counterObserver++ === start) {
             if (max < arrMongo.length) {
               addClassList(document.body, ElemClasses.HIDDEN);
               removeClassList(getLoader(), ElemClasses.HIDDEN);

@@ -1,4 +1,4 @@
-import { getCategory, getCategoryById } from '../api/api';
+import { getCategory } from '../api/api';
 import cards from '../cards';
 import { objGame } from '../control/obj-game';
 import { changeAdminCategory } from '../store/actions';
