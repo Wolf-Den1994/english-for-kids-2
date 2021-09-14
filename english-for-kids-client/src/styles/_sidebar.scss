@@ -1,0 +1,77 @@
+.sidebar {
+  background-color: $color-auxiliary;
+  position: absolute;
+  left: 0;
+  width: 290px;
+  padding: 80px 0 50px 50px;
+  top: 0;
+  height: 100%;
+  transition: all 0.3s linear;
+  z-index: 3;
+  opacity: 1;
+  overflow-y: auto;
+
+  &.hidden {
+    transform: translateX(-300px);
+    opacity: 0;
+  }
+
+  .menu {
+    display: flex;
+    flex-direction: column;
+
+    &-link {
+      text-decoration: none;
+      color: $color-main;
+      margin-bottom: 24px;
+      font-size: 20px;
+      position: relative;
+      cursor: pointer;
+      line-height: 1;
+      width: fit-content;
+
+      &.active {
+        color: $color-additional-active;
+      }
+
+      &:hover {
+        color: $color-additional;
+        transition: color 0.3s ease-out;
+      }
+
+      &::after {
+        display: block;
+        position: absolute;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: $color-additional;
+        content: "";
+        transition: width 0.3s ease-out;
+      }
+
+      &:hover::after,
+      &:focus:after {
+        width: 100%;
+      }
+
+      &:last-child {
+        border: 2px solid $color-main;
+        border-radius: 5px;
+        padding: 20px 100px 20px 25px;
+        margin: 35px 0 0;
+        transition: all 0.3s ease-out;
+
+        &:hover {
+          border: 2px solid $color-additional;
+          color: $color-additional;
+        }
+
+        &:hover::after,
+        &:focus:after {
+          width: 0;
+        }
+      }
+    }
+  }
+}

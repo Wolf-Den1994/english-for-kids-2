@@ -1,0 +1,24 @@
+[[redirects]]
+  from = "/words"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/word"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/category"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/categories"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/admin"
+  to = "/"
+  status = 301

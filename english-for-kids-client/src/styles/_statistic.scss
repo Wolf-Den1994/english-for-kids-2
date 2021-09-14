@@ -1,0 +1,60 @@
+.statistic {
+  margin: 0 auto;
+  max-width: 1200px;
+  width: 100%;
+  padding: 20px 10px 10px;
+
+  .btn {
+    margin: 20px 20px 20px 0;
+    display: inline-block;
+  }
+
+  &-table {
+    margin: 10px 0;
+    width: 100%;
+    font-size: 16px;
+    box-shadow: 3px 3px 10px 0 $color-shadow;
+
+    .table-body {
+      th,
+      td {
+        border: 1px solid $color-auxiliary;
+        padding: 5px;
+        text-align: center;
+      }
+
+      th {
+        cursor: pointer;
+        padding: 10px 5px;
+        background-color: $color-additional;
+      }
+
+      td {
+        padding: 5px;
+        background-color: $color-border-card;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .statistic-table {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 510px) {
+  .statistic-table {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 440px) {
+  th,
+  .cell-word {
+    writing-mode: vertical-lr;
+  }
+  .div-th {
+    writing-mode: horizontal-tb;
+  }
+}
